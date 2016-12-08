@@ -1,6 +1,0 @@
---Document changes with each google drive upload--
-12/7/2016
-- created changelog
-- Initial CSS style created
-- centered page
-- adjusted canvas to fit comfortably on page without scrolling
