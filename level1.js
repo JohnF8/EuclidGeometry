@@ -1,8 +1,8 @@
-var points = [new Point(50, 50), new Point(25, 75), new Point(75, 75)];
+var points = [new Point(100, 100), new Point(50, 200), new Point(150, 200), new Point(200, 100), new Point(200, 200)];
 var lines = new Array();
 var circles = new Array();
-var finalPoints = new Array();
-var finalLines = [new Segment()];
+var finalPoints = [new Point(100, 100), new Point(50, 200), new Point(150, 200), new Point(200, 100), new Point(200, 200)];
+var finalLines = [new Segment(100, 100, 50, 200), new Segment(50, 200, 150, 200), new Segment(150, 200, 100, 100), new Segment(200, 100, 200, 200)];
 var finalCircles = new Array();
 var levelNumber = 1;
 var lastMouseDown;
@@ -74,6 +74,68 @@ canvas.onmouseup = function(event){
 };
 
 function checkForCompletion(){
+	if(allCirclesFound() && allPointsFound() && allLinesFound){
+		nextLevelButtonHidden = false;
+	}
+}
+
+function allCirclesFound(){
+	var booleans = new Array(finalCircles.length);
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		booleans[i] = false;
+	}
+	for (var i = finalCircles.length - 1; i >= 0; i--) {
+		if(mainContainsCircle(finalCircles[i])){
+			booleans[i] = true;
+		}
+	}
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		if(!booleans[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
+function allPointsFound(){
+	var booleans = new Array(finalPoints.length);
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		booleans[i] = false;
+	}
+	for (var i = finalPoints.length - 1; i >= 0; i--) {
+		if(mainContainsPoint(finalPoints[i])){
+			booleans[i] = true;
+		}
+	}
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		if(!booleans[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
+function mainContainsPoint(keyPoint){
+	for (var i = points.length - 1; i >= 0; i--) {
+		if(calculateDistance(keyPoint.x, keyPoint.y, points[i].x, points[i].y) < pointRadius){
+			return true;
+		}
+	}
+	return false;
+}
+
+function mainContainsCircle(keyCircle){
+	for (var i = circles.length - 1; i >= 0; i--) {
+		if(calculateDistance(keyCircle.xCenter, keyCircle.yCenter, circles[i].xCenter, circles[i].yCenter) < pointRadius){
+			if(Math.abs(keyCircle.radius - circles[i].radius) < pointRadius*2){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function allLinesFound(){
 	if(lines.length < finalLines.length){
 		var linesFoundBoolean = new Array(finalLines.length);
 		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
@@ -91,9 +153,10 @@ function checkForCompletion(){
 			}
 		}
 		if(allLinesFound){
-			nextLevelButtonHidden = false;
+			return true;
 		}
 	}
+	return false;
 }
 
 function lineFoundWithinError(objectiveLine){
@@ -109,7 +172,7 @@ function lineFoundWithinError(objectiveLine){
 		y2 = lines[i].y2;
 		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
 		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
-		if(point1DistanceOff < 5 && point2DistanceOff < 5){
+		if(point1DistanceOff < pointRadius && point2DistanceOff < pointRadius){
 			return true;
 		}
 	}
