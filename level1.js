@@ -74,7 +74,10 @@ canvas.onmouseup = function(event){
 };
 
 function checkForCompletion(){
-	if(allCirclesFound() && allPointsFound() && allLinesFound){
+	var circlesFound = allCirclesFound();
+	var pointsFound = allPointsFound();
+	var linesFound = allLinesFound();
+	if(circlesFound && pointsFound && linesFound){
 		nextLevelButtonHidden = false;
 	}
 }
@@ -180,7 +183,7 @@ function lineFoundWithinError(objectiveLine){
 }
 
 function lineFoundInverted(objectiveLine){
-	var newObjective = new Line(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
+	var newObjective = new Segment(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
 	return lineFoundWithinError(newObjective);
 }
 
