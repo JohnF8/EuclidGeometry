@@ -1,12 +1,21 @@
-var points = new Array();
-var lines = new Array();
-var circles = new Array();
+var points = new Array(); //TODO add starting points
+var lines = new Array();	//TODO add starting lines
+var circles = new Array();	//TODO add starting circles
+var finalPoints = new Array();	//TODO add final expected points
+var finalLines = new Array(); //TODO add final expected lines
+var finalCircles = new Array();	  //TODO add final expected circles
+var levelNumber = 0;
 var lastMouseDown;
+var nextLevelButtonHidden = true;
 var secondClick = false;
 var pointRadius = 5;
 var canvas = document.getElementById("mainContent");
 var ctx = canvas.getContext("2d");
 var toolbarState = document.getElementById("toolbar").getAttribute("state");
+var nextLevelButton = document.getElementById("nextLevelButton");
+updateButton();
+updateCanvas();
+console.log("source is " + document.getElementById("level").src);
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -32,6 +41,8 @@ canvas.onmousedown = function(event){
 		}
 	}
 	updateCanvas();
+	checkForCompletion();
+	updateButton();
 };
 
 canvas.onmouseup = function(event){
@@ -53,7 +64,23 @@ canvas.onmouseup = function(event){
 		}
 	}
 	updateCanvas();
+	checkForCompletion();
+	updateButton();
 };
+
+function checkForCompletion(){
+	//TODO add script for verification of finished level
+	nextLevelButtonHidden = false; //setting this false makes the button to go to the next level appear
+}
+
+function updateButton(){
+	if(!nextLevelButtonHidden){
+		$ ("#nextLevelButton").show();
+	}else{
+		$ ("#nextLevelButton").hide();
+	}
+}
+
 /*creates a point construct, contains the x and y variables*/
 function Point(x, y){
 	this.x = x;
@@ -138,4 +165,10 @@ function updateCanvas(){
 	drawPoints(context);
 	drawLines(context);
 	drawCircle(context);
+}
+
+nextLevelButton.onclick = function(event){
+	var nextLevelNumber = levelNumber + 1;
+	console.log("Moving to level" + nextLevelNumber + ".js");
+	document.getElementById("level").src = "level" + nextLevelNumber + ".js";
 }
