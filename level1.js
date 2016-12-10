@@ -16,7 +16,6 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testCalculateDistance();
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
@@ -72,6 +71,24 @@ canvas.onmouseup = function(event){
 	checkForCompletion();
 	updateButton();
 };
+
+function testLineFoundWithinError(){
+	var line = new Segment(100, 100, 50, 200);
+	console.log("lineFoundWithinError test with known included line result: " + lineFoundWithinError(line));
+	line = new Segment(95, 100, 45, 200);
+	console.log("lineFoundWithinError test with line with 5px error on the x axis result: " + lineFoundWithinError(line));
+	line = new Segment(100, 95, 50, 195);
+	console.log("lineFoundWithinError test with line with 5px error on the y axis result: " + lineFoundWithinError(line));
+	line = new Segment(1, 1, 50, 200);
+	console.log("lineFoundWithinError test with line known to not be included result: " + lineFoundWithinError(line));
+}
+
+function testLineFoundInverted(){
+	var line = new Segment(50, 200, 100, 100);
+	console.log("lineFoundInverted test with known inverted line result: " + lineFoundInverted(line));
+	line = new Segment(50, 200, 1, 1);
+	console.log("lineFoundInverted test with known non-member line result: " + lineFoundInverted(line));
+}
 
 function testCalculateDistance(){
 	var distance = calculateDistance(1, 1, 2, 1);
@@ -154,7 +171,9 @@ function allLinesFound(){
 			linesFoundBoolean[i] = false;
 		}
 		for (var i = finalLines.length - 1; i >= 0; i--) {
-			if(lineFoundWithinError(finalLines[i]) || lineFoundInverted(finalLines[i])){
+			var lineFoundNormally = lineFoundWithinError(finalLines[i]);
+			var lineFoundInverted = lineFoundWithinError(finalLines[i]);
+			if(lineFoundNormally || lineFoundInverted){
 				linesFoundBoolean[i] = true;
 			}
 		}
