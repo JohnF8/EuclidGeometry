@@ -1,9 +1,6 @@
 var points = new Array(); //TODO add starting points
 var lines = new Array();	//TODO add starting lines
 var circles = new Array();	//TODO add starting circles
-var finalPoints = new Array();	//TODO add final expected points
-var finalLines = new Array(); //TODO add final expected lines
-var finalCircles = new Array();	  //TODO add final expected circles
 var levelNumber = 0;
 var lastMouseDown;
 var nextLevelButtonHidden = true;
