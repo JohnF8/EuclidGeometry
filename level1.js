@@ -16,7 +16,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-
+testCalculateDistance();
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
@@ -72,6 +72,15 @@ canvas.onmouseup = function(event){
 	checkForCompletion();
 	updateButton();
 };
+
+function testCalculateDistance(){
+	var distance = calculateDistance(1, 1, 2, 1);
+	console.log("distance from (1,1) to (2, 1): " + distance);
+	distance = calculateDistance(1, 1, 1, 2);
+	console.log("distance from (1, 1) to (1, 2): " + distance);
+	distance = calculateDistance(0, 0, 3, 4);
+	console.log("distance from (0, 0) to (3, 4): " + distance);
+}
 
 function checkForCompletion(){
 	var circlesFound = allCirclesFound();
