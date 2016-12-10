@@ -14,15 +14,9 @@
 	<a href="level1.html"><!--TODO make the href match what the next level will be--><button id="nextLevelButton" width="100%">Go to next level</button></a>
 	<p id="currentToolbarState">point</p>
 	<div id="toolbar">
-		<button id="pointButton">Point</button>
-		<button id="segmentButton">Segment</button>
-		<button id="circleButton">Circle</button>
-		
-		<button id="triangleButton">Triangle</button>
-		<button id="midpointButton">Midpoint</button>
-		<button id="rayButton">Ray</button>
-		<button id="equilateralTriangleButton">Equilateral</button>
-		<button id="angleBisectorButton">Bisector</button>
+		<button id="pointButton">point</button>
+		<button id="segmentButton">segment</button>
+		<button id="circleButton">circle</button>
 	</div>
 	<!--creates the place to display the points drawn on the canvas-->
 	<canvas id="mainContent" height = "735" width="1200" style="border:1px solid #d3d3d3"> 
@@ -45,12 +39,6 @@
 		document.getElementById("pointButton").onclick = function(){updateToolbarState("point")};
 		document.getElementById("segmentButton").onclick = function(){updateToolbarState("segment")};
 		document.getElementById("circleButton").onclick = function(){updateToolbarState("circle")};
-		
-		document.getElementById("triangleButton").onclick = function(){updateToolbarState("triangle")};
-		document.getElementById("midpointButton").onclick = function() {updateToolbarState("Midpoint")};
-		document.getElementById("rayButton").onclick = function() {updateToolbarState("Midpoint")};
-		document.getElementById("equilateralTriangleButtonButton").onclick = function() {updateToolbarState("Equilateral")};
-		document.getElementById("angleBisectorButtonButton").onclick = function() {updateToolbarState("Bisector")};
 	</script>
 </body>
 </html>
