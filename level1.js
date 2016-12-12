@@ -77,16 +77,16 @@ canvas.onmouseup = function(event){
 
 function testLineFoundWithinError(){
 	var lines = [new Segment(100, 100, 50, 200)];
-	var linesFound = lineFoundWithinError(line);
+	var linesFound = lineFoundWithinError(finalLines[0]);
 	console.log("lineFoundWithinError test with known included line result: " + lineFound);
 	lines = [new Segment(95, 100, 45, 200)];
-	lineFound = lineFoundWithinError(line);
+	lineFound = lineFoundWithinError(finalLines[0]);
 	console.log("lineFoundWithinError test with line with 5px error on the x axis result: " + lineFound);
 	lines = [new Segment(100, 95, 50, 195)];
-	lineFound = lineFoundWithinError(line);
+	lineFound = lineFoundWithinError(finalLines[0]);
 	console.log("lineFoundWithinError test with line with 5px error on the y axis result: " + lineFound);
 	lines = [new Segment(1, 1, 50, 200)];
-	lineFound = lineFoundWithinError(line);
+	lineFound = lineFoundWithinError(finalLines[0]);
 	console.log("lineFoundWithinError test with line known to not be included result: " + lineFound);
 	lines = new Array();
 }
