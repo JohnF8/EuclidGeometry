@@ -76,8 +76,8 @@ canvas.onmouseup = function(event){
 };
 
 function testLineFoundWithinError(){
-	var lines = [new Segment(100, 100, 50, 200)];
-	var linesFound = lineFoundWithinError(finalLines[0]);
+	lines = [new Segment(100, 100, 50, 200)];
+	var lineFound = lineFoundWithinError(finalLines[0]);
 	console.log("lineFoundWithinError test with known included line result: " + lineFound);
 	lines = [new Segment(95, 100, 45, 200)];
 	lineFound = lineFoundWithinError(finalLines[0]);
@@ -211,7 +211,7 @@ function lineFoundWithinError(objectiveLine){
 		y2 = lines[i].y2;
 		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
 		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
-		if(point1DistanceOff < pointRadius && point2DistanceOff < pointRadius){
+		if(point1DistanceOff <= pointRadius && point2DistanceOff <= pointRadius){
 			console.log("Compatible line found for (" + objectiveX1 + ", " + objectiveX2 + ") to (" + objectiveX2 + ", " + objectiveY2 + ")");
 			return true;
 		}
