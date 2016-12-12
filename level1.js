@@ -16,6 +16,9 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
+testLineFoundWithinError();
+testLineFoundInverted();
+
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
@@ -204,6 +207,7 @@ function lineFoundWithinError(objectiveLine){
 		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
 		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
 		if(point1DistanceOff < pointRadius && point2DistanceOff < pointRadius){
+			console.log("Compatible line found for (" + objectiveX1 + ", " + objectiveX2 + ") to (" + objectiveX2 + ", " + objectiveY2 + ")");
 			return true;
 		}
 	}
