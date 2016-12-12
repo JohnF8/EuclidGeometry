@@ -92,10 +92,13 @@ function testLineFoundWithinError(){
 }
 
 function testLineFoundInverted(){
-	var line = new Segment(50, 200, 100, 100);
-	console.log("lineFoundInverted test with known inverted line result: " + lineFoundInverted(line));
-	line = new Segment(50, 200, 1, 1);
-	console.log("lineFoundInverted test with known non-member line result: " + lineFoundInverted(line));
+	lines = new Segment(50, 200, 100, 100);
+	var lineFound = lineFoundInverted(finalLines[0]);
+	console.log("lineFoundInverted test with known inverted line result: " + lineFound);
+	lines = new Segment(50, 200, 1, 1);
+	lineFound = lineFoundInverted(finalLines[0]);
+	console.log("lineFoundInverted test with known non-member line result: " + lineFound);
+	lines = new Array();
 }
 
 function testCalculateDistance(){
