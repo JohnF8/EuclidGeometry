@@ -13,6 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
+testHas3Connecting();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -82,10 +83,13 @@ function checkForCompletion(){
 }
 
 function has3Connecting(linesOfSameLength){
+	var line1 = linesOfSameLength[0];
+	var line2;
+	var line3;
 	var point1 = new Point(linesOfSameLength[0].x1, linesOfSameLength[0].y1);
 	var point2 = new Point(linesOfSameLength[0].x2, linesOfSameLength[0].y2);
 	var point3;
-	for (var i = linesOfSameLength.length - 1; i >= 0; i--) {
+	for (var i = linesOfSameLength.length - 1; i >= 1; i--) {
 		var otherPoint = lineOtherPoint(linesOfSameLength[i], point1);
 		if(otherPoint == null){
 			otherPoint = lineOtherPoint(linesOfSameLength[i], point2);
@@ -93,7 +97,48 @@ function has3Connecting(linesOfSameLength){
 				continue;
 			}
 		}
+		point3 = otherPoint;
+		var line2 = linesOfSameLength[i];
+		break;
 	}
+	if((lineFoundWithinError(point1.x, point1.y, point3.x, point3.y) || lineFoundInverted(point1.x, point1.y, point3.x, point3.y))&& (lineFoundWithinError(point2.x, point2.y, point3.x, point3.y) || lineFoundInverted(point2.x, point2.y, point3.x, point3.y))){
+		return true;		
+	}
+	return false;
+}
+
+function testHas3Connecting(){
+	console.log("test has3Connecting")
+	var linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(750, 400, 625, 683), new Segment(625, 683, 500, 400)];
+	console.log("test has3Connecting with known connecting lines result: " + has3Connecting(linesOfSameLength));
+	linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(200, 200, 350, 200), new Segment(800, 800, 900, 900)];
+	console.log("test has3Connecting with lines that don't connect result: " + has3Connecting(linesOfSameLength));
+}
+
+function lineFoundWithinError(objectiveLine){
+	var objectiveX1 = objectiveLine.x1;
+	var objectiveX2 = objectiveLine.x2;
+	var objectiveY1 = objectiveLine.y1;
+	var objectiveY2 = objectiveLine.y2;
+	for (var i = lines.length - 1; i >= 0; i--) {
+		var x1, x2, y1, y2;
+		x1 = lines[i].x1;
+		x2 = lines[i].x2;
+		y1 = lines[i].y1;
+		y2 = lines[i].y2;
+		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
+		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
+		if(point1DistanceOff <= pointRadius && point2DistanceOff <= pointRadius){
+			console.log("Compatible line found for (" + objectiveX1 + ", " + objectiveX2 + ") to (" + objectiveX2 + ", " + objectiveY2 + ")");
+			return true;
+		}
+	}
+	return false;
+}
+
+function lineFoundInverted(objectiveLine){
+	var newObjective = new Segment(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
+	return lineFoundWithinError(newObjective);
 }
 
 function updateButton(){
