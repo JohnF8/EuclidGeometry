@@ -183,8 +183,9 @@ function allLinesFound(){
 				return false;
 			}
 		}
+		return true;
 	}
-	return true;
+	return false;
 }
 
 function lineFoundWithinError(objectiveLine){
