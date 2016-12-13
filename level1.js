@@ -16,7 +16,6 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testLineFoundInverted();
 
 
 nextLevelButton.onclick = function(event){
@@ -177,27 +176,14 @@ function mainContainsCircle(keyCircle){
 function allLinesFound(){
 	if(lines.length >= finalLines.length){
 		var linesFoundBoolean = new Array(finalLines.length);
-		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
-			linesFoundBoolean[i] = false;
-		}
 		for (var i = finalLines.length - 1; i >= 0; i--) {
 			var lineFoundNormally = lineFoundWithinError(finalLines[i]);
 			var lineFoundInverted = lineFoundWithinError(finalLines[i]);
-			if(lineFoundNormally || lineFoundInverted){
-				linesFoundBoolean[i] = true;
-			}
-		}
-		var allLinesFound = true;
-		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
-			if(linesFoundBoolean[i] == false){
-				allLinesFound = false;
-			}
-		}
-		if(allLinesFound){
-			return true;
+			if(!lineFoundNormally && !lineFoundInverted){
+				return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 function lineFoundWithinError(objectiveLine){
