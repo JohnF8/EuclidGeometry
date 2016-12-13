@@ -1,10 +1,12 @@
 //Level is to create two circles to create a Venn Diagram of students that go to Hampton vs go to school in Pennsylvania
-var points = [new Point(100, 100), new Point(200, 200)]; //A - B
-var lines = new Array();
+var points = [new Point(100, 100), new Point(300, 300)]; //A - B. A is smalller and B is the larger circle
+var finalPoints = new Array();
 var circles = new Array();
-
 var finalCircles = [new Circle(100, 100, 500, 500), new Circle(200,200,1000,1000)]; //Just need to ensure that A is bigger than B. Perhaps need to do an area function of cicle
-var finalCircles = new Array();
+var lines = new Array();
+var finalLines = new Array();
+
+
 var levelNumber = 3;
 var lastMouseDown;
 var nextLevelButtonHidden = true;
@@ -75,7 +77,7 @@ canvas.onmouseup = function(event){
 	checkForCompletion();
 	updateButton();
 };
-
+/*
 function testLineFoundWithinError(){
 	lines = [new Segment(100, 100, 50, 200)];
 	var lineFound = lineFoundWithinError(finalLines[0]);
@@ -91,6 +93,7 @@ function testLineFoundWithinError(){
 	console.log("lineFoundWithinError test with line known to not be included result: " + lineFound);
 	lines = new Array();
 }
+
 
 function testLineFoundInverted(){
 	lines = new Segment(50, 200, 100, 100);
@@ -110,6 +113,7 @@ function testCalculateDistance(){
 	distance = calculateDistance(0, 0, 3, 4);
 	console.log("distance from (0, 0) to (3, 4): " + distance);
 }
+*/
 
 function checkForCompletion(){
 	var circlesFound = allCirclesFound();
@@ -156,6 +160,24 @@ function allPointsFound(){
 	return true;
 }
 
+function allLinesFound(){
+	var booleans = new Array(finalPoints.length);
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		booleans[i] = false;
+	}
+	for (var i = finalPoints.length - 1; i >= 0; i--) {
+		if(mainContainsPoint(finalPoints[i])){
+			booleans[i] = true;
+		}
+	}
+	for (var i = booleans.length - 1; i >= 0; i--) {
+		if(!booleans[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
 function mainContainsPoint(keyPoint){
 	for (var i = points.length - 1; i >= 0; i--) {
 		if(calculateDistance(keyPoint.x, keyPoint.y, points[i].x, points[i].y) < pointRadius){
@@ -176,31 +198,22 @@ function mainContainsCircle(keyCircle){
 	return false;
 }
 
-function allLinesFound(){
-	if(lines.length < finalLines.length){
-		var linesFoundBoolean = new Array(finalLines.length);
-		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
-			linesFoundBoolean[i] = false;
-		}
-		for (var i = finalLines.length - 1; i >= 0; i--) {
-			var lineFoundNormally = lineFoundWithinError(finalLines[i]);
-			var lineFoundInverted = lineFoundWithinError(finalLines[i]);
-			if(lineFoundNormally || lineFoundInverted){
-				linesFoundBoolean[i] = true;
-			}
-		}
-		var allLinesFound = true;
-		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
-			if(linesFoundBoolean[i] == false){
-				allLinesFound = false;
-			}
-		}
-		if(allLinesFound){
-			return true;
-		}
+//Utilizing the lineFoundWithinError function to write my circleFoundWithinError function
+function circleFoundWithinError(objectiveLine){
+	var objectiveX1 = objectiveLine.x1;
+	var objectiveX2 = objectiveLine.x2;
+	var objectiveY1 = objectiveLine.y1;
+	var objectiveY2 = objectiveLine.y2;
+	for(var i = lines.length - 1; i >= 0; i--){
+		var x1, x2, y1, y2;
+		x1 = lines[i].x1;
+		x2 = lines[i].x2;
+		y1 = lines[i].y1;
+		y2 = lines[i].y2;
+		
 	}
-	return false;
-}
+		
+	}
 
 function lineFoundWithinError(objectiveLine){
 	var objectiveX1 = objectiveLine.x1;
