@@ -48,6 +48,7 @@ canvas.onmousedown = function(event){
 	}
 	updateCanvas();
 	checkForCompletion();
+	updateButton();
 };
 
 canvas.onmouseup = function(event){
