@@ -91,10 +91,10 @@ function testLineFoundWithinError(){
 }
 
 function testLineFoundInverted(){
-	lines = new Segment(50, 200, 100, 100);
+	lines = [new Segment(100, 100, 50, 200)];
 	var lineFound = lineFoundInverted(finalLines[0]);
 	console.log("lineFoundInverted test with known inverted line result: " + lineFound);
-	lines = new Segment(50, 200, 1, 1);
+	lines = [new Segment(50, 200, 1, 1)];
 	lineFound = lineFoundInverted(finalLines[0]);
 	console.log("lineFoundInverted test with known non-member line result: " + lineFound);
 	lines = new Array();
@@ -223,7 +223,7 @@ function lineFoundWithinError(objectiveLine){
 
 function lineFoundInverted(objectiveLine){
 	var newObjective = new Segment(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
-	return linefoundWithinError(newObjective);
+	return lineFoundWithinError(newObjective);
 }
 
 function calculateDistance(x1, y1, x2, y2){
