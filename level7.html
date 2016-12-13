@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<title>Euclid Game</title>
+</head>
+<body>
+	<h1> The Euclid Game </h1>
+	<p>
+		<!--TODO make instructions here-->
+		Play around with the point, segment, and circle objects. Click on the "Go to next level" button when you are finished
+	</p>
+	<a href="level1.html"><!--TODO make the href match what the next level will be--><button id="nextLevelButton" width="100%">Go to next level</button></a>
+	<p id="currentToolbarState">point</p>
+	<div id="toolbar">
+		<button id="pointButton">point</button>
+		<button id="segmentButton">segment</button>
+		<button id="circleButton">circle</button>
+	</div>
+	<!--creates the place to display the points drawn on the canvas-->
+	<canvas id="mainContent" height = "735" width="1200" style="border:1px solid #d3d3d3"> 
+		The game isn't working
+	</canvas>
+	<!--handles the level functionality-->
+	<script id="level" src="BasicObjects.js"></script>
+	<!-- handles the toolbar functionality -->
+	<script type="text/javascript" id="toolbarTools">
+		//sets up for one to be able to change states based upon the toolbar buttons
+		var p = document.getElementById("toolbar");
+		var att = document.createAttribute("state");
+		att.value = "point";
+		p.setAttributeNode(att);
+		function updateToolbarState(newState){
+			document.getElementById("toolbar").setAttribute("state", newState);
+			document.getElementById("currentToolbarState").innerHTML = document.getElementById("toolbar").getAttribute("state");
+		}
+		//create the event handlers for the toolbar
+		document.getElementById("pointButton").onclick = function(){updateToolbarState("point")};
+		document.getElementById("segmentButton").onclick = function(){updateToolbarState("segment")};
+		document.getElementById("circleButton").onclick = function(){updateToolbarState("circle")};
+	</script>
+</body>
+</html>
