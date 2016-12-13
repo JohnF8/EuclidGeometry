@@ -1,6 +1,6 @@
-var points = new Array(); //TODO add starting points
-var lines = new Array();	//TODO add starting lines
-var circles = new Array();	//TODO add starting circles
+var points = [new Point(500, 400), new Point(750, 400)];
+var lines = [new Segment(500, 400, 750, 400)];
+var circles = new Array();
 var levelNumber = 0;
 var lastMouseDown;
 var nextLevelButtonHidden = true;
@@ -66,8 +66,34 @@ canvas.onmouseup = function(event){
 };
 
 function checkForCompletion(){
-	//TODO add script for verification of finished level
-	nextLevelButtonHidden = false; //setting this false makes the button to go to the next level appear
+	if(lines.length >= 3 && circles.length > 0){
+		var targetLength = calculateDistance(lines[0].x1, lines[0].y1, lines[0].x2, lines[0].y2);
+		var linesOfProperLength = [lines[0]];
+		for (var i = lines.length - 1; i >= 1; i--) {
+			if(Math.abs(calculateDistance(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2) - targetLength) < Math.sqrt(50)){
+				linesOfProperLength.push(lines[i]);
+			}
+		}
+		if(has3Connecting(linesOfProperLength)){
+			return true;
+		}
+	}
+	return false;
+}
+
+function has3Connecting(linesOfSameLength){
+	var point1 = new Point(linesOfSameLength[0].x1, linesOfSameLength[0].y1);
+	var point2 = new Point(linesOfSameLength[0].x2, linesOfSameLength[0].y2);
+	var point3;
+	for (var i = linesOfSameLength.length - 1; i >= 0; i--) {
+		var otherPoint = lineOtherPoint(linesOfSameLength[i], point1);
+		if(otherPoint == null){
+			otherPoint = lineOtherPoint(linesOfSameLength[i], point2);
+			if(otherPoint == null){
+				continue;
+			}
+		}
+	}
 }
 
 function updateButton(){
@@ -168,4 +194,9 @@ nextLevelButton.onclick = function(event){
 	var nextLevelNumber = levelNumber + 1;
 	console.log("Moving to level" + nextLevelNumber + ".js");
 	document.getElementById("level").src = "level" + nextLevelNumber + ".js";
+}
+
+
+function calculateDistance(x1, y1, x2, y2){
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
