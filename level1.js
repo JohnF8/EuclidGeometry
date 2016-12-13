@@ -178,8 +178,8 @@ function allLinesFound(){
 		var linesFoundBoolean = new Array(finalLines.length);
 		for (var i = finalLines.length - 1; i >= 0; i--) {
 			var lineFoundNormally = lineFoundWithinError(finalLines[i]);
-			var lineFoundInverted = lineFoundWithinError(finalLines[i]);
-			if(!lineFoundNormally && !lineFoundInverted){
+			var lineFoundOther = lineFoundInverted(finalLines[i]);
+			if(!lineFoundNormally && !lineFoundOther){
 				return false;
 			}
 		}
