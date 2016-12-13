@@ -16,7 +16,6 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testLineFoundWithinError();
 testLineFoundInverted();
 
 
@@ -176,7 +175,7 @@ function mainContainsCircle(keyCircle){
 }
 
 function allLinesFound(){
-	if(lines.length < finalLines.length){
+	if(lines.length >= finalLines.length){
 		var linesFoundBoolean = new Array(finalLines.length);
 		for (var i = linesFoundBoolean.length - 1; i >= 0; i--) {
 			linesFoundBoolean[i] = false;
@@ -224,7 +223,7 @@ function lineFoundWithinError(objectiveLine){
 
 function lineFoundInverted(objectiveLine){
 	var newObjective = new Segment(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
-	return lineFoundWithinError(newObjective);
+	return linefoundWithinError(newObjective);
 }
 
 function calculateDistance(x1, y1, x2, y2){
