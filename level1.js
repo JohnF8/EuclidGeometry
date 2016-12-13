@@ -91,7 +91,7 @@ function testLineFoundWithinError(){
 }
 
 function testLineFoundInverted(){
-	lines = [new Segment(100, 100, 50, 200)];
+	lines = [new Segment(50, 200, 100, 100)];
 	var lineFound = lineFoundInverted(finalLines[0]);
 	console.log("lineFoundInverted test with known inverted line result: " + lineFound);
 	lines = [new Segment(50, 200, 1, 1)];
