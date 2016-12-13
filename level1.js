@@ -181,6 +181,7 @@ function allLinesFound(){
 			var lineFoundInverted = lineFoundWithinError(finalLines[i]);
 			if(!lineFoundNormally && !lineFoundInverted){
 				return false;
+			}
 		}
 	}
 	return true;
