@@ -3,7 +3,16 @@ body
 	font-family: arial;
 	text-align: center;
 }
-
+button {
+    background-color: "white";
+    border: none;
+    color: #39F;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
 h1 
 {        
 	background-color:#CCC;    
