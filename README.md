@@ -12,9 +12,14 @@ Level 1
 Working on:
 
 Emily: 		Level 7
+
 John: 		Level 3
+
 Justin: 	Level 2
+
 Max: 		Stylesheet
+
+Tyler: 
 
 Remaining:
 

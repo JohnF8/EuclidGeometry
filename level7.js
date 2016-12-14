@@ -13,6 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
+testLineOtherPoint();
 testHas3Connecting();
 
 canvas.onmousedown = function(event){
@@ -107,8 +108,30 @@ function has3Connecting(linesOfSameLength){
 	return false;
 }
 
+function lineOtherPoint(line, point){
+	if(line.x1 == point.x && line.y1 == point.y){
+		return new Point(line.x2, line.y2);
+	}else if(line.x2 == point.x && line.y2 == point.y){
+		return new Point(line.x1, line.y1);
+	}else{
+		return null;
+	}
+}
+
+function testLineOtherPoint(){
+	console.log("\n test lineOtherPoint")
+	var point = new Point(1, 1);
+	var line = new Segment(1, 1, 2, 2);
+	console.log("case where otherPoint is the second point: " + new Point(2, 2) == lineOtherPoint(line, point));
+	line = new Segment(2, 2, 1, 1);
+	console.log("case where otherPoint is the first point: " + new Point(2, 2) == lineOtherPoint(line, point));
+	line = new Segment(2, 2, 2, 3);
+	console.log("case where the point isn't even in the segment: " + linteOtherPoint(line, point) == null);
+}
+
 function testHas3Connecting(){
-	console.log("test has3Connecting")
+	console.log("\n test has3Connecting");
+	lines = [new Segment(500, 400, 750, 400), new Segment(750, 400, 625, 683), new Segment(625, 683, 500, 400)];
 	var linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(750, 400, 625, 683), new Segment(625, 683, 500, 400)];
 	console.log("test has3Connecting with known connecting lines result: " + has3Connecting(linesOfSameLength));
 	linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(200, 200, 350, 200), new Segment(800, 800, 900, 900)];
