@@ -84,7 +84,42 @@ function checkForCompletion(){
 }
 
 function threeSidesSameLength(lengths){
-	
+
+}
+
+function findLinesOfCommonLength(commonLength){
+	var result = new Array();
+	for (var i = lines.length - 1; i >= 0; i--) {
+		if(lines[i].length - commonLength < 10){
+			result.push(lines[i]);
+		}
+	}
+	if(result.length < 3){
+		return null;
+	}else{
+		return result;
+	}
+}
+
+function linesFormEquilateralTriangle(triangleSides){
+	//compare the points, only surefire way to know if they concide
+}
+
+function testFindLinesOfCommonLength(){
+	console.log("test findLinesOfCommonLength");
+	var lengths = [1, 1, 3, 5];
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3), new Segment(4, 4, 7, 4), new Segment(5, 5, 10, 5)];
+	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3)];
+	var result = findLinesOfCommonLength;
+	console.log("first two lines common case: " + )
+}
+
+function testThreeSidesSameLength(){
+
+}
+
+function testLinesFormEquilateralTriangle(){
+
 }
 
 function updateButton(){
@@ -107,6 +142,9 @@ function Segment(x1, y1, x2, y2){
 	this.y1 = y1;
 	this.x2 = x2;
 	this.y2 = y2;
+	this.equals = function(other){
+		
+	}
 }
 
 /*represents a circle defined by a center point and a radius defined with another point. Both points are in the constructor for simplicity*/
