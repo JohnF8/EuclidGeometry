@@ -11,7 +11,7 @@ Level 1
 
 Working on:
 
-Emily: 		Level 7
+Emily: 		Level 7/ Level 8
 
 John: 		Level 3
 
@@ -19,7 +19,7 @@ Justin: 	Level 2
 
 Max: 		Stylesheet
 
-Tyler: 
+Tyler: 		Testing/Debugging
 
 Remaining:
 
