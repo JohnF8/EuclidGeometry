@@ -13,7 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testExpectedFound();
+testNotYetIncluded();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -68,11 +68,7 @@ canvas.onmouseup = function(event){
 
 function checkForCompletion(){
 	if(lines.length >= 3){
-		var lineLengths = new Array();
-		for (var i = lines.length - 1; i >= 0; i--) {
-			lineLengths[i] = calculateDistance(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2);
-		}
-		var commonLength = threeLinesSameLength(lineLengths);
+		var commonLength = threeLinesSameLength(lines);
 		if(commonLength != -1){
 			var triangleSides = findLinesOfCommonLength(commonLength);
 			if(linesFormEquilateralTriangle(triangleSides)){
@@ -82,8 +78,61 @@ function checkForCompletion(){
 	}
 }
 
-function threeSidesSameLength(lengths){
+function threeSidesSameLength(checkLines){
+	var foundNumbers = new Array();
+	for (var i = checkLines.length - 1; i >= 0; i--) {
+		if(notYetIncluded(foundNumbers, checkLines[i].length)){
+			foundNumbers.push(new frequencyLink(checkLines[i].length, 1));
+		}else{
+			for (var i = foundNumbers.length - 1; i >= 0; i--) {
+				if(foundNumbers[i] == checkLines[i].length){
+					foundNumbers[i].frequencyIncrement();
+				}
+			}
+		}
+	}
+	var mostFrequent = new frequencyLink(0, 0);
+	for (var i = foundNumbers.length - 1; i >= 0; i--) {
+		if(foundNumbers[i].frequency > mostFrequent.frequency){
+			mostFrequent = foundNumbers[i];
+		}
+	}
+	if(mostFrequent.frequency > 3){
+		return mostFrequent.length;
+	}else{
+		return -1;
+	}
+}
 
+function testNotYetIncluded(){
+	console.log("\n test notYetIncluded");
+	var numbers = [1, 2, 3, 4, 5];
+	var checkNumber = 1;
+	var result = notYetIncluded(numbers, checkNumber);
+	console.log("known included case: (expect true) " + result);
+	checkNumber = 2;
+	result = notYetIncluded(numbers, checkNumber);
+	console.log("known included case further down the array: (expect true) " + result);
+	checkNumber = 7;
+	result = notYetIncluded(numbers, checkNumber);
+	console.log("known not included case: (expect false) " + result);
+}
+
+function notYetIncluded(numbers, checkNumber){
+	for (var i = numbers.length - 1; i >= 0; i--) {
+		if(numbers[i] == checkNumber){
+			return true;
+		}
+	}
+	return false;
+}
+
+function frequencyLink(number, startingFrequency){
+	this.number = number;
+	this.frequency = startingFrequency;
+	this.frequencyIncrement = function(){
+		this.frequency += 1;
+	}
 }
 
 function findLinesOfCommonLength(commonLength){
@@ -217,7 +266,7 @@ function testLineEquals(){
 function Circle(xCenter, yCenter, xOther, yOther){
 	this.radius = Math.sqrt(Math.pow((xCenter - xOther), 2) + Math.pow((yCenter - yOther),2));
 	this.xCenter = xCenter;
-	this.yCenter = yCenter
+	this.yCenter = yCenter;
 }
 
 /*calculates the slope of a line segment*/
