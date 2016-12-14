@@ -1,5 +1,5 @@
 //Level is to create two circles to create a Venn Diagram of students that go to Hampton vs go to school in Pennsylvania
-var points = [new Point(100, 100), new Point(300, 300)]; //A - B. A is smalller and B is the larger circle
+var points = [new Point (300, 300), new Point(350, 350)]; //A - B. A is smalller and B is the larger circle
 var finalPoints = new Array();
 var circles = new Array();
 var finalCircles = [new Circle(100, 100, 500, 500), new Circle(200,200,1000,1000)]; //Just need to ensure that A is bigger than B. Perhaps need to do an area function of cicle
@@ -77,43 +77,7 @@ canvas.onmouseup = function(event){
 	checkForCompletion();
 	updateButton();
 };
-/*
-function testLineFoundWithinError(){
-	lines = [new Segment(100, 100, 50, 200)];
-	var lineFound = lineFoundWithinError(finalLines[0]);
-	console.log("lineFoundWithinError test with known included line result: " + lineFound);
-	lines = [new Segment(95, 100, 45, 200)];
-	lineFound = lineFoundWithinError(finalLines[0]);
-	console.log("lineFoundWithinError test with line with 5px error on the x axis result: " + lineFound);
-	lines = [new Segment(100, 95, 50, 195)];
-	lineFound = lineFoundWithinError(finalLines[0]);
-	console.log("lineFoundWithinError test with line with 5px error on the y axis result: " + lineFound);
-	lines = [new Segment(1, 1, 50, 200)];
-	lineFound = lineFoundWithinError(finalLines[0]);
-	console.log("lineFoundWithinError test with line known to not be included result: " + lineFound);
-	lines = new Array();
-}
 
-
-function testLineFoundInverted(){
-	lines = new Segment(50, 200, 100, 100);
-	var lineFound = lineFoundInverted(finalLines[0]);
-	console.log("lineFoundInverted test with known inverted line result: " + lineFound);
-	lines = new Segment(50, 200, 1, 1);
-	lineFound = lineFoundInverted(finalLines[0]);
-	console.log("lineFoundInverted test with known non-member line result: " + lineFound);
-	lines = new Array();
-}
-
-function testCalculateDistance(){
-	var distance = calculateDistance(1, 1, 2, 1);
-	console.log("distance from (1,1) to (2, 1): " + distance);
-	distance = calculateDistance(1, 1, 1, 2);
-	console.log("distance from (1, 1) to (1, 2): " + distance);
-	distance = calculateDistance(0, 0, 3, 4);
-	console.log("distance from (0, 0) to (3, 4): " + distance);
-}
-*/
 
 function checkForCompletion(){
 	var circlesFound = allCirclesFound();
@@ -197,6 +161,16 @@ function mainContainsCircle(keyCircle){
 	}
 	return false;
 }
+
+function circleIsLarger(){
+	var value = circles[i].yCenter;
+	var att = document.createAttribute("val")
+	att.value = value
+}
+
+
+
+
 
 //Utilizing the lineFoundWithinError function to write my circleFoundWithinError function
 function circleFoundWithinError(objectiveLine){
