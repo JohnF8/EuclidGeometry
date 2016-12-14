@@ -13,7 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testLineEquals();
+testExpectedFound();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
