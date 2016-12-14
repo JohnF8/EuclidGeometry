@@ -13,8 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testLineOtherPoint();
-testHas3Connecting();
+testExpectedFound();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -110,8 +109,37 @@ function testFindLinesOfCommonLength(){
 	var lengths = [1, 1, 3, 5];
 	lines = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3), new Segment(4, 4, 7, 4), new Segment(5, 5, 10, 5)];
 	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3)];
-	var result = findLinesOfCommonLength;
-	console.log("first two lines common case: " + )
+	var result = findLinesOfCommonLength();
+	console.log("first two lines common case: " + expcectedFound(expected, result));
+	
+
+	lines = new Array();
+}
+
+function testExpectedFound(){
+	console.log("\n test expectedFound and Segment.equals")
+	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+	var result = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+	console.log("with two of the same array (expected true): " + expectedFound(expected, result));
+	result = [new Segment(3, 3, 4, 3), new Segment(4, 4, 5, 4)];
+	console.log("with array of length two and completely non-matching results (expected false): " + expectedFound(expected, result));
+	result = [new Segment(1, 1, 2, 1), new Segment(3, 3, 4, 3)];
+	console.log("with arrays of same lengths and second element mismatch (expected false): " + expectedFound(expected, result));
+	result = [new Segment(3, 3, 4, 3), new Segment(2, 2, 3, 2)];
+	console.log("with arrays of same lengths and first element mismatch (expected false): " + expectedFound(expected, result));
+}
+
+function expectedFound(expected, result){
+	for (var i = result.length - 1; i >= 0; i--) {
+		try{
+			if(result[i] !== expected[i]){
+				return false;
+			}
+		}catch (error){			//will probably happen because expected is shorter than result
+			return false;
+		}
+	}
+	return true;
 }
 
 function testThreeSidesSameLength(){
@@ -142,9 +170,6 @@ function Segment(x1, y1, x2, y2){
 	this.y1 = y1;
 	this.x2 = x2;
 	this.y2 = y2;
-	this.equals = function(other){
-		
-	}
 }
 
 /*represents a circle defined by a center point and a radius defined with another point. Both points are in the constructor for simplicity*/
