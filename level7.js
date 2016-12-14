@@ -68,100 +68,23 @@ canvas.onmouseup = function(event){
 };
 
 function checkForCompletion(){
-	if(lines.length >= 3 && circles.length > 0){
-		var targetLength = calculateDistance(lines[0].x1, lines[0].y1, lines[0].x2, lines[0].y2);
-		var linesOfProperLength = [lines[0]];
-		for (var i = lines.length - 1; i >= 1; i--) {
-			if(Math.abs(calculateDistance(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2) - targetLength) < Math.sqrt(50)){
-				linesOfProperLength.push(lines[i]);
+	if(lines.length >= 3){
+		var lineLengths = new Array();
+		for (var i = lines.length - 1; i >= 0; i--) {
+			lineLengths[i] = calculateDistance(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2);
+		}
+		var commonLength = threeLinesSameLength(lineLengths);
+		if(commonLength != -1){
+			var triangleSides = findLinesOfCommonLength(commonLength);
+			if(linesFormEquilateralTriangle(triangleSides)){
+				nextLevelButtonHidden = false;
 			}
 		}
-		if(has3Connecting(linesOfProperLength)){
-			return true;
-		}
-	}
-	return false;
-}
-
-function has3Connecting(linesOfSameLength){
-	var line1 = linesOfSameLength[0];
-	var line2;
-	var line3;
-	var point1 = new Point(linesOfSameLength[0].x1, linesOfSameLength[0].y1);
-	var point2 = new Point(linesOfSameLength[0].x2, linesOfSameLength[0].y2);
-	var point3;
-	for (var i = linesOfSameLength.length - 1; i >= 1; i--) {
-		var otherPoint = lineOtherPoint(linesOfSameLength[i], point1);
-		if(otherPoint == null){
-			otherPoint = lineOtherPoint(linesOfSameLength[i], point2);
-			if(otherPoint == null){
-				continue;
-			}
-		}
-		point3 = otherPoint;
-		var line2 = linesOfSameLength[i];
-		break;
-	}
-	if((lineFoundWithinError(point1.x, point1.y, point3.x, point3.y) || lineFoundInverted(point1.x, point1.y, point3.x, point3.y))&& (lineFoundWithinError(point2.x, point2.y, point3.x, point3.y) || lineFoundInverted(point2.x, point2.y, point3.x, point3.y))){
-		return true;		
-	}
-	return false;
-}
-
-function lineOtherPoint(line, point){
-	if(line.x1 == point.x && line.y1 == point.y){
-		return new Point(line.x2, line.y2);
-	}else if(line.x2 == point.x && line.y2 == point.y){
-		return new Point(line.x1, line.y1);
-	}else{
-		return null;
 	}
 }
 
-function testLineOtherPoint(){
-	console.log("\n test lineOtherPoint")
-	var point = new Point(1, 1);
-	var line = new Segment(1, 1, 2, 2);
-	console.log("case where otherPoint is the second point: " + new Point(2, 2) == lineOtherPoint(line, point));
-	line = new Segment(2, 2, 1, 1);
-	console.log("case where otherPoint is the first point: " + new Point(2, 2) == lineOtherPoint(line, point));
-	line = new Segment(2, 2, 2, 3);
-	console.log("case where the point isn't even in the segment: " + linteOtherPoint(line, point) == null);
-}
-
-function testHas3Connecting(){
-	console.log("\n test has3Connecting");
-	lines = [new Segment(500, 400, 750, 400), new Segment(750, 400, 625, 683), new Segment(625, 683, 500, 400)];
-	var linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(750, 400, 625, 683), new Segment(625, 683, 500, 400)];
-	console.log("test has3Connecting with known connecting lines result: " + has3Connecting(linesOfSameLength));
-	linesOfSameLength = [new Segment(500, 400, 750, 400), new Segment(200, 200, 350, 200), new Segment(800, 800, 900, 900)];
-	console.log("test has3Connecting with lines that don't connect result: " + has3Connecting(linesOfSameLength));
-}
-
-function lineFoundWithinError(objectiveLine){
-	var objectiveX1 = objectiveLine.x1;
-	var objectiveX2 = objectiveLine.x2;
-	var objectiveY1 = objectiveLine.y1;
-	var objectiveY2 = objectiveLine.y2;
-	for (var i = lines.length - 1; i >= 0; i--) {
-		var x1, x2, y1, y2;
-		x1 = lines[i].x1;
-		x2 = lines[i].x2;
-		y1 = lines[i].y1;
-		y2 = lines[i].y2;
-		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
-		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
-		if(point1DistanceOff <= pointRadius && point2DistanceOff <= pointRadius){
-			console.log("Compatible line found for (" + objectiveX1 + ", " + objectiveX2 + ") to (" + objectiveX2 + ", " + objectiveY2 + ")");
-			return true;
-		}
-	}
-	return false;
-}
-
-function lineFoundInverted(objectiveLine){
-	var newObjective = new Segment(objectiveLine.x2, objectiveLine.y2, objectiveLine.x1, objectiveLine.y1);
-	return lineFoundWithinError(newObjective);
+function threeSidesSameLength(lengths){
+	
 }
 
 function updateButton(){
