@@ -68,7 +68,7 @@ canvas.onmouseup = function(event){
 
 function checkForCompletion(){
 	if(lines.length >= 3){
-		var commonLength = threeLinesSameLength(lines);
+		var commonLength = threeSidesSameLength(lines);
 		if(commonLength != -1){
 			var triangleSides = findLinesOfCommonLength(commonLength);
 			if(linesFormEquilateralTriangle(triangleSides)){
@@ -85,7 +85,7 @@ function threeSidesSameLength(checkLines){
 			foundNumbers.push(new frequencyLink(checkLines[i].length, 1));
 		}else{
 			for (var i = foundNumbers.length - 1; i >= 0; i--) {
-				if(foundNumbers[i] == checkLines[i].length){
+				if(foundNumbers[i].number == checkLines[i].length){
 					foundNumbers[i].frequencyIncrement();
 				}
 			}
@@ -120,11 +120,11 @@ function testNotYetIncluded(){
 
 function notYetIncluded(numbers, checkNumber){
 	for (var i = numbers.length - 1; i >= 0; i--) {
-		if(numbers[i] == checkNumber){
-			return true;
+		if(numbers[i].number == checkNumber){
+			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 function frequencyLink(number, startingFrequency){
@@ -194,16 +194,16 @@ function expectedFound(expected, result){
 function testThreeSidesSameLength(){
 	console.log("\n test threeSidesSameLength");
 	var checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1)];
-	var result = threeLinesSameLength(checkLines);
+	var result = threeSidesSameLength(checkLines);
 	console.log("with three lines of same length: (expected 1) " + result);
 	checkLines = [new Segment(1, 1, 2, 1), new Segment(1, 1, 3, 3), new Segment(2, 1, 1, 1)];
-	result = threeLinesSameLength(checkLines);
+	result = threeSidesSameLength(checkLines);
 	console.log("with three lines of different lengths: (expected -1) " + result);
 	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1), new Segment(3, 3, 5, 4)];
-	result = threeLinesSameLength(checkLines);
+	result = threeSidesSameLength(checkLines);
 	console.log("with four lines and one line with different length: (expected 1) " + result);
 	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 1, 3, 3), new Segment(3, 3, 1, 1)];
-	result = threeLinesSameLength(checkLines);
+	result = threeSidesSameLength(checkLines);
 	console.log("with four lines and two lengths: (expected -1) " + result);
 }
 
