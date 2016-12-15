@@ -298,7 +298,7 @@ function updateCanvas(){
 function getAreaCircle(x){
 	var radiusCircle = circles[x].radius;
 
-	var area = 2 * PI * radiusCircle;
+	var area = PI * (radiusCircle * radiusCircle);
 
 	return area;
 
