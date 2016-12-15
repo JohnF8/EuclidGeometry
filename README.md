@@ -9,12 +9,13 @@ Levels completed:
 Level 0
 Level 1
 Level 3
+Level 4
 
 Working on:
 
 Emily: 		Level 7/ Level 8
 
-John: 		Level 4
+John: 		Level 6
 
 Justin: 	Level 2
 
@@ -24,4 +25,4 @@ Tyler: 		Testing/Debugging
 
 Remaining:
 
-levels   6, 8, 9, 10, 11, 12 ...
+levels   8, 9, 10, 11, 12 ...

@@ -8,4 +8,4 @@ Changelog:
 
 12/12: Levels assigned. Emily finished level 1 and moved onto level 7. John created code for level 3. Justin assigned level 2. Max almost done with stylesheet
 
-12/14: Level 3 is finished, John will work on Level 4
+12/14: Level 3 and 4 are finished, John will work on Level 6
