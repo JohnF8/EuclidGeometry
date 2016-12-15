@@ -1,11 +1,8 @@
-//Level is to create two circles to create a Venn Diagram of students that go to Hampton vs go to school in Pennsylvania
+//The purpose of the level is to create two circles to create a Venn Diagram of students that go to Hampton vs go to school in Pennsylvania
 var points = [new Point (300, 300), new Point(350, 350)]; //A - B. A is smalller and B is the larger circle
 var finalPoints = new Array();
 var circles = new Array();
-var finalCircles = [new Circle(100, 100, 500, 500), new Circle(200,200,1000,1000)]; //Just need to ensure that A is bigger than B. Perhaps need to do an area function of cicle
-var lines = new Array();
 var finalLines = new Array();
-
 
 var levelNumber = 3;
 var lastMouseDown;
@@ -16,17 +13,14 @@ var canvas = document.getElementById("mainContent");
 var ctx = canvas.getContext("2d");
 var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
+var PI = 3.14159
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testLineFoundWithinError();
-testLineFoundInverted();
-
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
 }
-
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -88,22 +82,35 @@ function checkForCompletion(){
 	}
 }
 
+
 function allCirclesFound(){
-	var booleans = new Array(finalCircles.length);
-	for (var i = booleans.length - 1; i >= 0; i--) {
-		booleans[i] = false;
+	//Test to see if circle[0] is the smaller one A
+	var Tester = false;
+	var circleZero = getAreaCircle(0);
+	var circleOne = getAreaCircle(1);
+	console.log(circleZero);
+	console.log(circleOne);
+
+	if (circles[1].xCenter < 315){
+		tester = true; //If true, then A is the smaller of the circles
 	}
-	for (var i = finalCircles.length - 1; i >= 0; i--) {
-		if(mainContainsCircle(finalCircles[i])){
-			booleans[i] = true;
+
+	if (Tester == true){
+		if (circleOne < circleZero){
+			return true;
 		}
-	}
-	for (var i = booleans.length - 1; i >= 0; i--) {
-		if(!booleans[i]){
+		else{
 			return false;
 		}
 	}
-	return true;
+		else{
+			if(circleOne > circleZero){
+				return true;
+			}
+			else{
+				return false;
+			}
+	}
 }
 
 function allPointsFound(){
@@ -162,32 +169,6 @@ function mainContainsCircle(keyCircle){
 	return false;
 }
 
-function circleIsLarger(){
-	var value = circles[i].yCenter;
-	var att = document.createAttribute("val")
-	att.value = value
-}
-
-
-
-
-
-//Utilizing the lineFoundWithinError function to write my circleFoundWithinError function
-function circleFoundWithinError(objectiveLine){
-	var objectiveX1 = objectiveLine.x1;
-	var objectiveX2 = objectiveLine.x2;
-	var objectiveY1 = objectiveLine.y1;
-	var objectiveY2 = objectiveLine.y2;
-	for(var i = lines.length - 1; i >= 0; i--){
-		var x1, x2, y1, y2;
-		x1 = lines[i].x1;
-		x2 = lines[i].x2;
-		y1 = lines[i].y1;
-		y2 = lines[i].y2;
-		
-	}
-		
-	}
 
 function lineFoundWithinError(objectiveLine){
 	var objectiveX1 = objectiveLine.x1;
@@ -245,8 +226,9 @@ function Segment(x1, y1, x2, y2){
 function Circle(xCenter, yCenter, xOther, yOther){
 	this.radius = Math.sqrt(Math.pow((xCenter - xOther), 2) + Math.pow((yCenter - yOther),2));
 	this.xCenter = xCenter;
-	this.yCenter = yCenter
+	this.yCenter = yCenter;
 }
+
 
 /*calculates the slope of a line segment*/
 function calculateSlope(segment){
@@ -311,4 +293,13 @@ function updateCanvas(){
 	drawPoints(context);
 	drawLines(context);
 	drawCircle(context);
+}
+
+function getAreaCircle(x){
+	var radiusCircle = circles[x].radius;
+
+	var area = 2 * PI * radiusCircle;
+
+	return area;
+
 }
