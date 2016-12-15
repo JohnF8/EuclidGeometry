@@ -1,14 +1,16 @@
-var points = [new Point(100, 200), new Point(300, 200)];
-var lines = [new Segment(100,200,300,200)];
+var points = [new Point(500, 400), new Point(700, 400)];
+var lines = [new Segment(500,400,700,400)];
 var circles = new Array();
 var finalPoints = new Array();
-var finalLines = [new Segment(100, 200, 200,400)];
-var finalCircles = [new Circle(100,200,300,200), new Circle(300,200,100,200)];
+var finalLines = [new Segment(600,230,600,575)];
+var finalCircles = [new Circle(500,400,700,400), new Circle(700,400,500,400)];
 var levelNumber = 6;
 var lastMouseDown;
 var nextLevelButtonHidden = true;
 var secondClick = false;
 var pointRadius = 5;
+var errorLine = 10;
+
 var canvas = document.getElementById("mainContent");
 var ctx = canvas.getContext("2d");
 var toolbarState = document.getElementById("toolbar").getAttribute("state");
@@ -113,6 +115,10 @@ function checkForCompletion(){
 	var circlesFound = allCirclesFound();
 	var pointsFound = allPointsFound();
 	var linesFound = allLinesFound();
+	console.log("Circles " + circlesFound);
+	console.log("Points " + pointsFound);
+	console.log("lines: " + linesFound);
+
 	if(circlesFound && pointsFound && linesFound){
 		nextLevelButtonHidden = false;
 	}
@@ -202,7 +208,7 @@ function lineFoundWithinError(objectiveLine){
 		y2 = lines[i].y2;
 		point1DistanceOff = calculateDistance(objectiveX1, objectiveY1, x1, y1);
 		point2DistanceOff = calculateDistance(objectiveX2, objectiveY2, x2, y2);
-		if(point1DistanceOff <= pointRadius && point2DistanceOff <= pointRadius){
+		if(point1DistanceOff <= errorLine && point2DistanceOff <= errorLine){
 			console.log("Compatible line found for (" + objectiveX1 + ", " + objectiveX2 + ") to (" + objectiveX2 + ", " + objectiveY2 + ")");
 			return true;
 		}

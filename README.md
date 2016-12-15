@@ -8,16 +8,18 @@ Levels completed:
 
 Level 0
 Level 1
+Level 2
 Level 3
 Level 4
+Level 6
 
 Working on:
 
 Emily: 		Level 7/ Level 8
 
-John: 		Level 6
+John: 		Level 9
 
-Justin: 	Level 2
+Justin: 	
 
 Max: 		Stylesheet/Level 5
 
@@ -25,4 +27,4 @@ Tyler: 		Testing/Debugging
 
 Remaining:
 
-levels   8, 9, 10, 11, 12 ...
+levels    10, 11, 12 ...
