@@ -13,7 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testNotYetIncluded();
+testThreeSidesSameLength();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - canvas.offsetLeft;
@@ -192,7 +192,19 @@ function expectedFound(expected, result){
 }
 
 function testThreeSidesSameLength(){
-
+	console.log("\n test threeSidesSameLength");
+	var checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1)];
+	var result = threeLinesSameLength(checkLines);
+	console.log("with three lines of same length: (expected 1) " + result);
+	checkLines = [new Segment(1, 1, 2, 1), new Segment(1, 1, 3, 3), new Segment(2, 1, 1, 1)];
+	result = threeLinesSameLength(checkLines);
+	console.log("with three lines of different lengths: (expected -1) " + result);
+	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1), new Segment(3, 3, 5, 4)];
+	result = threeLinesSameLength(checkLines);
+	console.log("with four lines and one line with different length: (expected 1) " + result);
+	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 1, 3, 3), new Segment(3, 3, 1, 1)];
+	result = threeLinesSameLength(checkLines);
+	console.log("with four lines and two lengths: (expected -1) " + result);
 }
 
 function testLinesFormEquilateralTriangle(){
