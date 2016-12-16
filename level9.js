@@ -1,9 +1,13 @@
-var points = [new Point(500, 400), new Point(700, 400)];
-var lines = [new Segment(500,400,700,400)];
-var circles = new Array();
+var points = [new Point(400, 400)];
+var lines = [new Segment(400,400,600,200), new Segment(400,400,600,450)]
+var circles = new Array(); 
+var midpoint = new Array();
+
 var finalPoints = new Array();
-var finalLines = [new Segment(600,230,600,575)];
-var finalCircles = [new Circle(500,400,700,400), new Circle(700,400,500,400)];
+var finalLines = new Array();
+var finalCircles = new Array();
+var finalMidpoint = new Array(); //Need to find out what the midpoint would be
+
 var levelNumber = 9;
 var lastMouseDown;
 var nextLevelButtonHidden = true;
@@ -237,6 +241,11 @@ function Circle(xCenter, yCenter, xOther, yOther){
 	this.yCenter = yCenter
 }
 
+function Midpoint(x1,y1,x2, y2){
+	console.log("Need to work on this.....")
+}
+
+
 /*calculates the slope of a line segment*/
 function calculateSlope(segment){
 	var slope = (segment.b.y - segment.a.y)/(segment.b.x - segment.a.x);
@@ -251,6 +260,21 @@ function drawPoints(context){
 		var x = points[i].x;
 		var y = points[i].y;
 		console.log("drawing point at x: " + x + " y: " + y);
+		context.fillStyle = "#0000ff";
+		context.arc(x, y, pointRadius, 0, 2*Math.PI);
+		context.fill();
+		context.stroke();
+	}
+}
+
+//Line 15 has the reference to context that I am looking for
+////////This is a new function!!!!!!!!!!//////////
+function drawMidpoint(context){
+	console.log("drawing a midpoint");
+	for(i=0; i< finalMidpoint.length; i++){
+		context.beginPath();
+		var x = (midpoint[i].x2 / midpoint[i].x1);
+		var y = (midpoint[i].y2 / midpoint[i].y1);
 		context.fillStyle = "#0000ff";
 		context.arc(x, y, pointRadius, 0, 2*Math.PI);
 		context.fill();
@@ -283,6 +307,7 @@ function drawCircle(context){
 	}
 }
 
+
 function closeToAnotherPoint(x, y){
 	var close = false;
 	for (var i = points.length - 1; i >= 0; i--) {
@@ -301,6 +326,3 @@ function updateCanvas(){
 	drawCircle(context);
 }
 
-function createMidpoint(){
-	console.log("test");
-}
