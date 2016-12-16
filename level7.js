@@ -67,149 +67,169 @@ canvas.onmouseup = function(event){
 };
 
 function checkForCompletion(){
-	if(lines.length >= 3){
-		var commonLength = threeSidesSameLength(lines);
-		if(commonLength != -1){
-			var triangleSides = findLinesOfCommonLength(commonLength);
-			if(linesFormEquilateralTriangle(triangleSides)){
-				nextLevelButtonHidden = false;
-			}
+	if(lines >= 3){
+		var triangleSides = getTriangle();
+		if(triangleSides != null){
+			return linesFormEquilateralTriangle(triangleSides);
 		}
 	}
+	return false;
 }
 
-function threeSidesSameLength(checkLines){
-	var foundNumbers = new Array();
-	for (var i = checkLines.length - 1; i >= 0; i--) {
-		if(notYetIncluded(foundNumbers, checkLines[i].length)){
-			foundNumbers.push(new frequencyLink(checkLines[i].length, 1));
-		}else{
-			for (var i = foundNumbers.length - 1; i >= 0; i--) {
-				if(foundNumbers[i].number == checkLines[i].length){
-					foundNumbers[i].frequencyIncrement();
-				}
-			}
-		}
-	}
-	var mostFrequent = new frequencyLink(0, 0);
-	for (var i = foundNumbers.length - 1; i >= 0; i--) {
-		if(foundNumbers[i].frequency > mostFrequent.frequency){
-			mostFrequent = foundNumbers[i];
-		}
-	}
-	if(mostFrequent.frequency > 3){
-		return mostFrequent.length;
-	}else{
-		return -1;
-	}
+function linesFormEquilateralTriangle(sides){
+	return (sides[0].length - sides[1].length < pointRadius*2) && (sides[1].length - sides[2].length < pointRadius*2);
 }
 
-function testNotYetIncluded(){
-	console.log("\n test notYetIncluded");
-	var numbers = [1, 2, 3, 4, 5];
-	var checkNumber = 1;
-	var result = notYetIncluded(numbers, checkNumber);
-	console.log("known included case: (expect true) " + result);
-	checkNumber = 2;
-	result = notYetIncluded(numbers, checkNumber);
-	console.log("known included case further down the array: (expect true) " + result);
-	checkNumber = 7;
-	result = notYetIncluded(numbers, checkNumber);
-	console.log("known not included case: (expect false) " + result);
-}
-
-function notYetIncluded(numbers, checkNumber){
-	for (var i = numbers.length - 1; i >= 0; i--) {
-		if(numbers[i].number == checkNumber){
-			return false;
-		}
-	}
-	return true;
-}
-
-function frequencyLink(number, startingFrequency){
-	this.number = number;
-	this.frequency = startingFrequency;
-	this.frequencyIncrement = function(){
-		this.frequency += 1;
-	}
-}
-
-function findLinesOfCommonLength(commonLength){
-	var result = new Array();
+function getTriangle(){
+	var firstPoint = new Point(lines[0].x1, lines[0].y1);
+	var secondPoint = new Point(lines[0].x2, lines[0].y2);
+	var firstLine = lines[0];
+	var secondLine, thirdLine;
 	for (var i = lines.length - 1; i >= 0; i--) {
-		if(lines[i].length - commonLength < 10){
-			result.push(lines[i]);
+		thirdPoint = getMatchingPoint(lines[i], firstPoint);
+		if(thirdPoint == null){
+			thirdPoint == getMatchingPoint(lines[i], secondPoint)
 		}
 	}
-	if(result.length < 3){
-		return null;
-	}else{
-		return result;
-	}
+	return null;
 }
 
-function linesFormEquilateralTriangle(triangleSides){
-	//compare the points, only surefire way to know if they concide
+function getMatchingPoint(line, point){
+
 }
 
-function testFindLinesOfCommonLength(){
-	console.log("test findLinesOfCommonLength");
-	var lengths = [1, 1, 3, 5];
-	lines = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3), new Segment(4, 4, 7, 4), new Segment(5, 5, 10, 5)];
-	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3)];
-	var result = findLinesOfCommonLength();
-	console.log("first two lines common case: " + expcectedFound(expected, result));
+// function threeSidesSameLength(checkLines){
+// 	var foundNumbers = new Array();
+// 	for (var i = checkLines.length - 1; i >= 0; i--) {
+// 		if(notYetIncluded(foundNumbers, checkLines[i].length)){
+// 			foundNumbers.push(new frequencyLink(checkLines[i].length, 1));
+// 		}else{
+// 			for (var i = foundNumbers.length - 1; i >= 0; i--) {
+// 				if(foundNumbers[i].number == checkLines[i].length){
+// 					foundNumbers[i].frequencyIncrement();
+// 				}
+// 			}
+// 		}
+// 	}
+// 	var mostFrequent = new frequencyLink(0, 0);
+// 	for (var i = foundNumbers.length - 1; i >= 0; i--) {
+// 		if(foundNumbers[i].frequency > mostFrequent.frequency){
+// 			mostFrequent = foundNumbers[i];
+// 		}
+// 	}
+// 	if(mostFrequent.frequency > 3){
+// 		return mostFrequent.length;
+// 	}else{
+// 		return -1;
+// 	}
+// }
+
+// function testNotYetIncluded(){
+// 	console.log("\n test notYetIncluded");
+// 	var numbers = [1, 2, 3, 4, 5];
+// 	var checkNumber = 1;
+// 	var result = notYetIncluded(numbers, checkNumber);
+// 	console.log("known included case: (expect true) " + result);
+// 	checkNumber = 2;
+// 	result = notYetIncluded(numbers, checkNumber);
+// 	console.log("known included case further down the array: (expect true) " + result);
+// 	checkNumber = 7;
+// 	result = notYetIncluded(numbers, checkNumber);
+// 	console.log("known not included case: (expect false) " + result);
+// }
+
+// function notYetIncluded(numbers, checkNumber){
+// 	for (var i = numbers.length - 1; i >= 0; i--) {
+// 		if(numbers[i].number == checkNumber){
+// 			return false;
+// 		}
+// 	}
+// 	return true;
+// }
+
+// function frequencyLink(number, startingFrequency){
+// 	this.number = number;
+// 	this.frequency = startingFrequency;
+// 	this.frequencyIncrement = function(){
+// 		this.frequency += 1;
+// 	}
+// }
+
+// function findLinesOfCommonLength(commonLength){
+// 	var result = new Array();
+// 	for (var i = lines.length - 1; i >= 0; i--) {
+// 		if(lines[i].length - commonLength < 10){
+// 			result.push(lines[i]);
+// 		}
+// 	}
+// 	if(result.length < 3){
+// 		return null;
+// 	}else{
+// 		return result;
+// 	}
+// }
+
+// function linesFormEquilateralTriangle(triangleSides){
+// 	//compare the points, only surefire way to know if they concide
+// }
+
+// function testFindLinesOfCommonLength(){
+// 	console.log("test findLinesOfCommonLength");
+// 	var lengths = [1, 1, 3, 5];
+// 	lines = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3), new Segment(4, 4, 7, 4), new Segment(5, 5, 10, 5)];
+// 	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 2, 3)];
+// 	var result = findLinesOfCommonLength();
+// 	console.log("first two lines common case: " + expcectedFound(expected, result));
 	
 
-	lines = new Array();
-}
+// 	lines = new Array();
+// }
 
-function testExpectedFound(){
-	console.log("\n test expectedFound and Segment.equals")
-	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
-	var result = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
-	console.log("with two of the same array (expected true): " + expectedFound(expected, result));
-	result = [new Segment(3, 3, 4, 3), new Segment(4, 4, 5, 4)];
-	console.log("with array of length two and completely non-matching results (expected false): " + expectedFound(expected, result));
-	result = [new Segment(1, 1, 2, 1), new Segment(3, 3, 4, 3)];
-	console.log("with arrays of same lengths and second element mismatch (expected false): " + expectedFound(expected, result));
-	result = [new Segment(3, 3, 4, 3), new Segment(2, 2, 3, 2)];
-	console.log("with arrays of same lengths and first element mismatch (expected false): " + expectedFound(expected, result));
-}
+// function testExpectedFound(){
+// 	console.log("\n test expectedFound and Segment.equals")
+// 	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+// 	var result = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+// 	console.log("with two of the same array (expected true): " + expectedFound(expected, result));
+// 	result = [new Segment(3, 3, 4, 3), new Segment(4, 4, 5, 4)];
+// 	console.log("with array of length two and completely non-matching results (expected false): " + expectedFound(expected, result));
+// 	result = [new Segment(1, 1, 2, 1), new Segment(3, 3, 4, 3)];
+// 	console.log("with arrays of same lengths and second element mismatch (expected false): " + expectedFound(expected, result));
+// 	result = [new Segment(3, 3, 4, 3), new Segment(2, 2, 3, 2)];
+// 	console.log("with arrays of same lengths and first element mismatch (expected false): " + expectedFound(expected, result));
+// }
 
-function expectedFound(expected, result){
-	for (var i = result.length - 1; i >= 0; i--) {
-		try{
-			if(!result[i].equals(expected[i])){
-				return false;
-			}
-		}catch (error){			//will probably happen because expected is shorter than result
-			return false;
-		}
-	}
-	return true;
-}
+// function expectedFound(expected, result){
+// 	for (var i = result.length - 1; i >= 0; i--) {
+// 		try{
+// 			if(!result[i].equals(expected[i])){
+// 				return false;
+// 			}
+// 		}catch (error){			//will probably happen because expected is shorter than result
+// 			return false;
+// 		}
+// 	}
+// 	return true;
+// }
 
-function testThreeSidesSameLength(){
-	console.log("\n test threeSidesSameLength");
-	var checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1)];
-	var result = threeSidesSameLength(checkLines);
-	console.log("with three lines of same length: (expected 1) " + result);
-	checkLines = [new Segment(1, 1, 2, 1), new Segment(1, 1, 3, 3), new Segment(2, 1, 1, 1)];
-	result = threeSidesSameLength(checkLines);
-	console.log("with three lines of different lengths: (expected -1) " + result);
-	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1), new Segment(3, 3, 5, 4)];
-	result = threeSidesSameLength(checkLines);
-	console.log("with four lines and one line with different length: (expected 1) " + result);
-	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 1, 3, 3), new Segment(3, 3, 1, 1)];
-	result = threeSidesSameLength(checkLines);
-	console.log("with four lines and two lengths: (expected -1) " + result);
-}
+// function testThreeSidesSameLength(){
+// 	console.log("\n test threeSidesSameLength");
+// 	var checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1)];
+// 	var result = threeSidesSameLength(checkLines);
+// 	console.log("with three lines of same length: (expected 1) " + result);
+// 	checkLines = [new Segment(1, 1, 2, 1), new Segment(1, 1, 3, 3), new Segment(2, 1, 1, 1)];
+// 	result = threeSidesSameLength(checkLines);
+// 	console.log("with three lines of different lengths: (expected -1) " + result);
+// 	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 2, 1, 1), new Segment(3, 3, 5, 4)];
+// 	result = threeSidesSameLength(checkLines);
+// 	console.log("with four lines and one line with different length: (expected 1) " + result);
+// 	checkLines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 1, 1), new Segment(1, 1, 3, 3), new Segment(3, 3, 1, 1)];
+// 	result = threeSidesSameLength(checkLines);
+// 	console.log("with four lines and two lengths: (expected -1) " + result);
+// }
 
-function testLinesFormEquilateralTriangle(){
+// function testLinesFormEquilateralTriangle(){
 
-}
+// }
 
 function updateButton(){
 	if(!nextLevelButtonHidden){
