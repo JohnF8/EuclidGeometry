@@ -25,8 +25,8 @@ nextLevelButton.onclick = function(event){
 
 canvas.onmousedown = function(event)
 {
-	var x = event.clientX - canvas.offsetLeft;
-	var y = event.clientY - canvas.offsetTop;
+	var x = event.clientX - event.offsetX;
+	var y = event.clientY - event.offsetY;
 	var toolbarState = document.getElementById("toolbar").getAttribute("state");
 	if(!closeToAnotherPoint(x, y))
 	{
