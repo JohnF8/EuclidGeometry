@@ -13,7 +13,9 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
-testThreeSidesSameLength();
+testLinesFormEquilateralTriangle();
+testGetMatchingPoint();
+testGetTriangle();
 
 canvas.onmousedown = function(event){
 	var x = event.clientX - event.offsetX;
@@ -80,22 +82,95 @@ function linesFormEquilateralTriangle(sides){
 	return (sides[0].length - sides[1].length < pointRadius*2) && (sides[1].length - sides[2].length < pointRadius*2);
 }
 
+function testLinesFormEquilateralTriangle(){
+	console.log("\n test linesFormEquilateralTriangle");
+	var sides = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 1, 2)];
+	var result = linesFormEquilateralTriangle(sides);
+	console.log("With lines that would hypothetically intersect of the same length: (expected true) " + result);
+	sides = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 1, 1)];
+	result = linesFormEquilateralTriangle(sides);
+	console.log("With lines that don't form an equilateral triangle: (expected false) " + result);
+}
+
 function getTriangle(){
 	var firstPoint = new Point(lines[0].x1, lines[0].y1);
 	var secondPoint = new Point(lines[0].x2, lines[0].y2);
 	var firstLine = lines[0];
 	var secondLine, thirdLine;
+	var pointFound = 0;
 	for (var i = lines.length - 1; i >= 0; i--) {
 		thirdPoint = getMatchingPoint(lines[i], firstPoint);
 		if(thirdPoint == null){
-			thirdPoint == getMatchingPoint(lines[i], secondPoint)
+			thirdPoint = getMatchingPoint(lines[i], secondPoint);
+			if(thirdPoint == null){
+				continue;
+			}else{
+				pointFound = 2;
+			}
+		}else{
+			pointFound = 1;
+		}
+		secondLine = lines[i];
+		if(pointFound == 1){
+			thirdLine = lines.filter(l => l.equals(new Segment(secondPoint.x, secondPoint.y, thirdPoint.x, thirdPoint.y)));
+		}else{
+			thirdLine = lines.filter(l => l.equals(new Segment(firstPoint.x, firstPoint.y, thirdPoint.x, thirdPoint.y)));
+		}
+		if(thirdLine != null){
+			return [firstLine, secondLine, thirdLine];
 		}
 	}
+
 	return null;
 }
 
 function getMatchingPoint(line, point){
+	if(point.x == line.x1 && point.x == line.y1){
+		return new Point(line.x2, line.y2);
+	}else if(point.x == line.x2 && point.x == line.y2){
+		return new Point(line.x1, line.y1);
+	}else{
+		return null;
+	}
+}
 
+function testGetMatchingPoint(){
+	console.log("\n test getMatchingPoint");
+	var line = new Segment(1, 1, 2, 1);
+	var point = new Point(1, 1);
+	var result = getMatchingPoint(line, point);
+	console.log("with the point being the first point in the segment: (expected Point(2, 1)) => (" + result.x + ", " + result.y + ")");
+	point = new Point(2, 1);
+	result = getMatchingPoint(line, point);
+	console.log("with the point being the second point in the segment: (expected (1, 1)) => (" + result.x + ", " + result.y + ")");
+	point = new Point(3, 3);
+	result = getMatchingPoint(line, point);
+	try{
+		console.log("with the point being not in the segment at all: (expected null: (" + result.x + ", " + result.y + ")");
+	}catch(error){
+		console.log("the point wasn't in the segment in the point not included in the segment test");
+	}
+}
+
+function testGetTriangle(){
+	console.log("\n test getTriangle");
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(1, 1, 2, 2)];
+	var expected = lines;
+	var result = getTriangle();
+	console.log("test with three segments that do form a triangle: (expected true) => " + expectedFound(expected, result));
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 2, 3)];
+	expected = null;
+	result = getTriangle();
+	console.log("test with three segments that do not form a triangle: (expected true) => " + result == expected);
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2,), new Segment(1, 1, 2, 2), new Segment (4, 4, 5, 4)];
+	expected = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(1, 1, 2, 2)];
+	result = getTriangle();
+	console.log("test with four segments, three of which form a triangle: (expected true): " + expectedFound(expected, result));
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(3, 3, 4, 3), new Segment(3, 3, 5, 3)];
+	expected = null;
+	result = getTriangle();
+	console.log("test with four segments, with two pairs that have a common point: (expected true): " + result == expected);
+	lines = new Array();
 }
 
 // function threeSidesSameLength(checkLines){
@@ -185,31 +260,31 @@ function getMatchingPoint(line, point){
 // 	lines = new Array();
 // }
 
-// function testExpectedFound(){
-// 	console.log("\n test expectedFound and Segment.equals")
-// 	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
-// 	var result = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
-// 	console.log("with two of the same array (expected true): " + expectedFound(expected, result));
-// 	result = [new Segment(3, 3, 4, 3), new Segment(4, 4, 5, 4)];
-// 	console.log("with array of length two and completely non-matching results (expected false): " + expectedFound(expected, result));
-// 	result = [new Segment(1, 1, 2, 1), new Segment(3, 3, 4, 3)];
-// 	console.log("with arrays of same lengths and second element mismatch (expected false): " + expectedFound(expected, result));
-// 	result = [new Segment(3, 3, 4, 3), new Segment(2, 2, 3, 2)];
-// 	console.log("with arrays of same lengths and first element mismatch (expected false): " + expectedFound(expected, result));
-// }
+function testExpectedFound(){
+	console.log("\n test expectedFound and Segment.equals")
+	var expected = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+	var result = [new Segment(1, 1, 2, 1), new Segment(2, 2, 3, 2)];
+	console.log("with two of the same array (expected true): " + expectedFound(expected, result));
+	result = [new Segment(3, 3, 4, 3), new Segment(4, 4, 5, 4)];
+	console.log("with array of length two and completely non-matching results (expected false): " + expectedFound(expected, result));
+	result = [new Segment(1, 1, 2, 1), new Segment(3, 3, 4, 3)];
+	console.log("with arrays of same lengths and second element mismatch (expected false): " + expectedFound(expected, result));
+	result = [new Segment(3, 3, 4, 3), new Segment(2, 2, 3, 2)];
+	console.log("with arrays of same lengths and first element mismatch (expected false): " + expectedFound(expected, result));
+}
 
-// function expectedFound(expected, result){
-// 	for (var i = result.length - 1; i >= 0; i--) {
-// 		try{
-// 			if(!result[i].equals(expected[i])){
-// 				return false;
-// 			}
-// 		}catch (error){			//will probably happen because expected is shorter than result
-// 			return false;
-// 		}
-// 	}
-// 	return true;
-// }
+function expectedFound(expected, result){
+	for (var i = result.length - 1; i >= 0; i--) {
+		try{
+			if(!result[i].equals(expected[i])){
+				return false;
+			}
+		}catch (error){			//will probably happen because expected is shorter than result
+			return false;
+		}
+	}
+	return true;
+}
 
 // function testThreeSidesSameLength(){
 // 	console.log("\n test threeSidesSameLength");
