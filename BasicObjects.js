@@ -149,7 +149,7 @@ function drawCircle(context){
 function closeToAnotherPoint(x, y){
 	var close = false;
 	for (var i = points.length - 1; i >= 0; i--) {
-		if(Math.sqrt(Math.pow((x - points[i].x), 2) - Math.pow((y - points[i].y), 2)) < pointRadius) {
+		if(Math.sqrt(Math.pow((x - points[i].x), 2) - Math.pow((y - points[i].y), 2)) < pointRadius*2) {
 			close = true;
 		}
 	}
