@@ -1,4 +1,5 @@
 var points = [new Point(300, 200), new Point(450, 200)];
+var initPoints = [new initPoint(300, 200, "Q"), new initPoint(450, 200, "P")];
 var lines = new Array();
 var circles = new Array();
 var finalPoints = [new Point(300, 200), new Point(450, 200)];
@@ -25,8 +26,8 @@ nextLevelButton.onclick = function(event){
 
 canvas.onmousedown = function(event)
 {
-	var x = event.clientX - event.offsetX;
-	var y = event.clientY - event.offsetY;
+	var x = event.offsetX;
+	var y = event.offsetY;
 	var toolbarState = document.getElementById("toolbar").getAttribute("state");
 	if(!closeToAnotherPoint(x, y))
 	{
@@ -285,6 +286,14 @@ function Point(x, y)
 	this.y = y;
 }
 
+/*creates init point construct, a point with a name*/
+function initPoint(x, y, name)
+{
+	this.x = x;
+	this.y = y;
+	this.name = name;
+}
+
 /*creates a segment out of two points, stores an x1, y1, x2, and a y2*/
 function Segment(x1, y1, x2, y2)
 {
@@ -323,6 +332,25 @@ function drawPoints(context)
 		context.arc(x, y, pointRadius, 0, 2*Math.PI);
 		context.fill();
 		context.stroke();
+	}
+}
+
+/*draws init points with letters designated in the array initPoints*/
+function drawInitPoints(context)
+{
+	console.log("drawing init points");
+	for (i = 0; i < initPoints.length; i++)
+	{
+		context.beginPath();
+		var x = initPoints[i].x;
+		var y = initPoints[i].y;
+		var name = initPoints[i].name;
+		console.log("drawing point at x: " + x + " y: " + y + " name:" + name);
+		context.fillStyle = "#0000ff";
+		context.arc(x, y, pointRadius, 0, 2*Math.PI);
+		context.fill();
+		context.stroke();
+		context.fillText(name, x-3, y+20);
 	}
 }
 
@@ -374,6 +402,7 @@ function updateCanvas()
 	var canvas = document.getElementById("mainContent");
 	var context = canvas.getContext("2d");
 	drawPoints(context);
+	drawInitPoints(context);
 	drawLines(context);
 	drawCircle(context);
 }
