@@ -6,74 +6,68 @@
 var points = new Array();
 var lines = new Array();
 var circles = new Array();
-var finalPoints = new Array();
-var finalLines = new Array();
-var finalCircles = new Array();
-var levelNumber;
-
-var lastMouseDown;
-var nextLevelButtonHidden = true;
-var secondClick = false;
-var pointRadius = 5;
 var canvas = document.getElementById("mainContent");
-var ctx = canvas.getContext("2d");
-var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
+var pointRadius = 5;
+var pointTolerance = pointRadius * 2;
+var selectedPointIndex = -1;
+var nextLevelButtonHidden = true;
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
 }
 
 
-canvas.onmousedown = function(event){
+
+canvas.onmousedown = function(event)
+{
 	var x = event.offsetX;
 	var y = event.offsetY;
 	var toolbarState = document.getElementById("toolbar").getAttribute("state");
-	if(!closeToAnotherPoint(x, y)){
-		points.push(new Point(x, y));
+
+	var previouseSelectedPointIndex = selectedPointIndex;
+	selectedPointIndex = closeToAnotherPoint(x, y);
+	
+	if(selectedPointIndex == -1)
+	{
+		var point = new Point(x, y);
+		points.push(point);
+		selectedPointIndex = points.length-1;
+		console.log("new point x:" + x + " y: " + y + "selectedPointIndex: " + selectedPointIndex );
 	}
-	if(toolbarState == "point"){
+	if(toolbarState == "point")
+	{
 		lastMouseDown = null;
+		selectedPointIndex = -1;
 	}
-	if(toolbarState == "segment" || toolbarState == "circle"){
-		if(lastMouseDown != event && lastMouseDown != null){
-			if(toolbarState == "segment"){
-				lines.push(new Segment(lastMouseDown.clientX - canvas.offsetLeft, lastMouseDown.clientY - canvas.offsetTop, x, y));
+	if(toolbarState == "segment" || toolbarState == "circle")
+	{
+		if(previouseSelectedPointIndex != -1)
+		{
+			var point1 = points[previouseSelectedPointIndex];
+			var point2 = points[selectedPointIndex];
+	
+			if(toolbarState == "segment")
+			{
+				lines.push(new Segment(point1.x, point1.y, point2.x,point2.y));
 			}
-			if(toolbarState == "circle"){
-				circles.push(new Circle(lastMouseDown.clientX - canvas.offsetLeft, lastMouseDown.clientY - canvas.offsetTop, x, y));
+			if(toolbarState == "circle")
+			{
+				circles.push(new Circle(point1.x, point1.y, point2.x,point2.y));
 			}
-			lastMouseDown = null;
-		}else{
-			lastMouseDown = event;
+			selectedPointIndex = -1;
 		}
 	}
+
 	updateCanvas();
 	checkForCompletion();
 	updateButton();
 };
 
-canvas.onmouseup = function(event){
-	var x = event.clientX - canvas.offsetLeft;
-	var y = event.clientY - canvas.offsetTop;
-	var toolbarState = document.getElementById("toolbar").getAttribute("state");
-	if(!closeToAnotherPoint(x, y)){
-		points.push(new Point(x, y));
-	}
-	if(toolbarState == "segment" || toolbarState == "circle"){
-		if(lastMouseDown != null && lastMouseDown.clientX != event.clientX && lastMouseDown.clientY != event.clientY){
-			if(toolbarState == "segment"){
-				lines.push(new Segment(lastMouseDown.clientX - canvas.offsetLeft, lastMouseDown.clientY - canvas.offsetTop, x, y));
-			}
-			if(toolbarState == "circle"){
-				circles.push(new Circle(lastMouseDown.clientX - canvas.offsetLeft, lastMouseDown.clientY - canvas.offsetTop, x, y));
-			}
-			lastMouseDown = null;
-		}
-	}
-	updateCanvas();
-	checkForCompletion();
-	updateButton();
+
+canvas.onmouseup = function(event)
+{
+	canvas.onmousedown(event);
 };
 
 /*creates a point construct, contains the x and y variables*/
@@ -133,6 +127,19 @@ function calculateSlope(segment){
 	return slope;
 }
 
+/*At some point, some error needs to be introduced, probably a 5px because that's the radius of the point*/
+function closeToAnotherPoint(x, y){
+	for (var i = points.length - 1; i >= 0; i--) {
+		var distance = Math.sqrt(Math.pow((x - points[i].x), 2) + Math.pow((y - points[i].y), 2));
+		console.log("evalute point x:" +points[i].x + " y: " +points[i].y + " distance:" + distance + "index: " + i );
+		if(distance <= pointTolerance) {
+		   console.log("found close point x:" +points[i].x + " y: " +points[i].y + "index: " + i );
+		   return i;
+		}
+	}
+	return -1;
+}
+
 /*draws the points designated in the array points*/
 function drawPoints(context){
 	console.log("drwaing points");
@@ -173,16 +180,7 @@ function drawCircle(context){
 	}
 }
 
-/*At some point, some error needs to be introduced, probably a 5px because that's the radius of the point*/
-function closeToAnotherPoint(x, y){
-	var close = false;
-	for (var i = points.length - 1; i >= 0; i--) {
-		if(Math.sqrt(Math.pow((x - points[i].x), 2) - Math.pow((y - points[i].y), 2)) < pointRadius) {
-			close = true;
-		}
-	}
-	return close;
-}
+
 
 function updateCanvas(){
 	var canvas = document.getElementById("mainContent");
