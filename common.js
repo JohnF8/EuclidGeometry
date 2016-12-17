@@ -88,6 +88,27 @@ function Segment(x1, y1, x2, y2){
 	this.y1 = y1;
 	this.x2 = x2;
 	this.y2 = y2;
+	this.length = calculateDistance(x1, y1, x2, y2);
+	this.equals = function(other){
+		if(this.x1 === other.x1){	//incorporate the error to make verification work
+			if(this.x2 === other.x2){
+				if(this.y1 === other.y1){
+					if(this.y2 === other.y2){
+						return true;
+					}
+				}
+			}
+		}else if(this.x1 === other.x2){
+			if(this.x2 === other.x1){
+				if(this.y1 === other.y2){
+					if(this.y2 === other.y1){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
 
 /*represents a circle defined by a center point and a radius defined with another point. Both points are in the constructor for simplicity*/
@@ -160,4 +181,12 @@ function updateCanvas(){
 	drawPoints(context);
 	drawLines(context);
 	drawCircle(context);
+}
+
+function updateButton(){
+	if(!nextLevelButtonHidden){
+		$ ("#nextLevelButton").show();
+	}else{
+		$ ("#nextLevelButton").hide();
+	}
 }
