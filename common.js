@@ -17,7 +17,37 @@ nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
 }
 
+canvas.onmousemove = function(event){
+	var toolbarState = document.getElementById("toolbar").getAttribute("state");
+	if(selectedPointIndex > -1){
+		if(toolbarState == "segment"){
+			drawLine(canvas.getContext("2d"), new Segment(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
+		}else if(toolbarState == "circle"){
+			drawCircle(canvas.getContext("2d"), new Circle(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
+		}
+	}
+}
 
+function drawCircle(context, circle){
+	//gets rid of the last thing drawn because of the drag
+	context.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas
+	updateCanvas(); //brings back all of the original points and values
+
+	context.beginPath();
+	context.arc(circle.xCenter, circle.yCenter, circle.radius, 0, Math.PI* 2);
+	context.stroke();
+}
+
+function drawLine(context, segment){
+	//gets rid of the last thing drawn because of the drag
+	context.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas
+	updateCanvas(); //brings back all of the original points and values
+
+	context.beginPath();
+	context.moveTo(segment.x1, segment.y1);
+	context.lineTo(segment.x2, segment.y2);
+	context.stroke();
+}
 
 canvas.onmousedown = function(event)
 {
@@ -167,7 +197,7 @@ function drawLines(context){
 }
 
 /* draws all the circles stored in the circles array*/
-function drawCircle(context){
+function drawCircles(context){
 	console.log("drawing circles");
 	for(i = 0; i < circles.length; i++){
 		context.beginPath();
@@ -185,9 +215,10 @@ function drawCircle(context){
 function updateCanvas(){
 	var canvas = document.getElementById("mainContent");
 	var context = canvas.getContext("2d");
-	drawPoints(context);
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	drawLines(context);
-	drawCircle(context);
+	drawCircles(context);
+	drawPoints(context);
 }
 
 function updateButton(){
