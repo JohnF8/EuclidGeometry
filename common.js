@@ -89,19 +89,28 @@ function Segment(x1, y1, x2, y2){
 	this.x2 = x2;
 	this.y2 = y2;
 	this.length = calculateDistance(x1, y1, x2, y2);
+	this.contains = function(point){
+		if(Math.abs(this.x1 - point.x) < pointRadius*2 && Math.abs(this.y1 - point.y) < pointRadius*2){
+			return true;
+		}else if(Math.abs(this.x2 - point.x) < pointRadius*2 && Math.abs(this.y2 - point.y) < pointRadius*2){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	this.equals = function(other){
-		if(this.x1 === other.x1){	//incorporate the error to make verification work
-			if(this.x2 === other.x2){
-				if(this.y1 === other.y1){
-					if(this.y2 === other.y2){
+		if(Math.abs(this.x1 - other.x1) < pointRadius*2){
+			if(Math.abs(this.x2 - other.x2) < pointRadius*2){
+				if(Math.abs(this.y1 - other.y1) < pointRadius*2){
+					if(Math.abs(this.y2 - other.y2) < pointRadius*2){
 						return true;
 					}
 				}
 			}
-		}else if(this.x1 === other.x2){
-			if(this.x2 === other.x1){
-				if(this.y1 === other.y2){
-					if(this.y2 === other.y1){
+		}else if(Math.abs(this.x1 - other.x2) < pointRadius*2){
+			if(Math.abs(this.x2 - other.x1) < pointRadius*2){
+				if(Math.abs(this.y1 - other.y2) < pointRadius*2){
+					if(Math.abs(this.y2 - other.y1) < pointRadius*2){
 						return true;
 					}
 				}
@@ -189,4 +198,8 @@ function updateButton(){
 	}else{
 		$ ("#nextLevelButton").hide();
 	}
+}
+
+function calculateDistance(x1, y1, x2, y2){
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
