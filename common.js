@@ -104,6 +104,12 @@ canvas.onmouseup = function(event)
 function Point(x, y){
 	this.x = x;
 	this.y = y;
+	this.equals = function(other){
+		if(calculateDistance(this.x, this.y, other.x, other.y) > pointTolerance){
+			return false;
+		}
+		return true;
+	}
 }
 
 /*creates a segment out of two points, stores an x1, y1, x2, and a y2*/
@@ -141,6 +147,14 @@ function Segment(x1, y1, x2, y2){
 			}
 		}
 		return false;
+	}
+	this.getOtherPoint = function(point){
+		if(calculateDistance(this.x1, this.y1, point.x, point.y) < pointTolerance){
+			return new Point(this.x2, this.y2);
+		}else if(calculateDistance(this.x2, this.y2, point.x, point.y) < pointTolerance){
+			return new Point(this.x1, this.y1);
+		}
+		return null;
 	}
 }
 

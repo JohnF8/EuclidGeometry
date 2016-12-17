@@ -24,7 +24,6 @@ function checkForCompletion(){
 	if(lines.length >= 3){
 		var firstPoint = points[0];
 		var secondPoint = points[1];
-		var otherSegments = findSegmentsWithOneOf(firstPoint, secondPoint);
 		if(lineFoundThatHas(firstPoint, point3) && lineFoundThatHas(secondPoint, point3)){
 			nextLevelButtonHidden = false;
 		}else if(lineFoundThatHas(firstPoint, point4) && lineFoundThatHas(secondPoint, point4)){
@@ -41,16 +40,4 @@ function lineFoundThatHas(p1, p2){
 		}
 	}
 	return false;
-}
-
-function findSegmentsWithOneOf(p1, p2){
-	var result = new Array();
-	for (var i = lines.length - 1; i >= 0; i--) {
-		if(lines[i].contains(p1) && !lines[i].contains(p2)){
-			result.push(lines[i]);
-		}else if(lines[i].contains(p2) && !lines[i].contains(p1)){
-			result.push(lines[i]);
-		}
-	}
-	return result;
 }
