@@ -13,6 +13,7 @@ var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
+testLineEquals();
 testLinesFormEquilateralTriangle();
 testGetMatchingPoint();
 testGetTriangle();
@@ -79,15 +80,17 @@ function checkForCompletion(){
 }
 
 function linesFormEquilateralTriangle(sides){
-	return (sides[0].length - sides[1].length < pointRadius*2) && (sides[1].length - sides[2].length < pointRadius*2);
+	lines01Difference = sides[0].length - sides[1].length;
+	lines12Difference = sides[1].length - sides[2].length;
+	return (Math.abs(lines01Difference) < pointRadius*2) && (Math.abs(lines12Difference) < pointRadius*2);
 }
 
 function testLinesFormEquilateralTriangle(){
 	console.log("\n test linesFormEquilateralTriangle");
-	var sides = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 1, 2)];
+	var sides = [new Segment(10, 10, 20, 10), new Segment(20, 10, 20, 20), new Segment(20, 20, 10, 20)];
 	var result = linesFormEquilateralTriangle(sides);
 	console.log("With lines that would hypothetically intersect of the same length: (expected true) " + result);
-	sides = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 1, 1)];
+	sides = [new Segment(100, 100, 200, 100), new Segment(200, 100, 200, 200), new Segment(200, 200, 100, 500)];
 	result = linesFormEquilateralTriangle(sides);
 	console.log("With lines that don't form an equilateral triangle: (expected false) " + result);
 }
@@ -116,18 +119,17 @@ function getTriangle(){
 		}else{
 			thirdLine = lines.filter(l => l.equals(new Segment(firstPoint.x, firstPoint.y, thirdPoint.x, thirdPoint.y)));
 		}
-		if(thirdLine != null){
-			return [firstLine, secondLine, thirdLine];
+		if(thirdLine.length > 0){
+			return [firstLine, secondLine, thirdLine[0]];
 		}
 	}
-
 	return null;
 }
 
 function getMatchingPoint(line, point){
 	if(point.x == line.x1 && point.x == line.y1){
 		return new Point(line.x2, line.y2);
-	}else if(point.x == line.x2 && point.x == line.y2){
+	}else if(point.x == line.x2 && point.y == line.y2){
 		return new Point(line.x1, line.y1);
 	}else{
 		return null;
@@ -157,19 +159,20 @@ function testGetTriangle(){
 	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(1, 1, 2, 2)];
 	var expected = lines;
 	var result = getTriangle();
-	console.log("test with three segments that do form a triangle: (expected true) => " + expectedFound(expected, result));
+	var print = (result != null);
+	console.log("test with three segments that do form a triangle: (expected true) => " + print);
 	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(2, 2, 2, 3)];
-	expected = null;
 	result = getTriangle();
-	console.log("test with three segments that do not form a triangle: (expected true) => " + result == expected);
-	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2,), new Segment(1, 1, 2, 2), new Segment (4, 4, 5, 4)];
-	expected = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(1, 1, 2, 2)];
+	print = (result == null);
+	console.log("test with three segments that do not form a triangle: (expected true) => " + print);
+	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(1, 1, 2, 2), new Segment (4, 4, 5, 4)];
 	result = getTriangle();
-	console.log("test with four segments, three of which form a triangle: (expected true): " + expectedFound(expected, result));
+	print = (result.length == 3);
+	console.log("test with four segments, three of which form a triangle: (expected true): " + print);
 	lines = [new Segment(1, 1, 2, 1), new Segment(2, 1, 2, 2), new Segment(3, 3, 4, 3), new Segment(3, 3, 5, 3)];
-	expected = null;
 	result = getTriangle();
-	console.log("test with four segments, with two pairs that have a common point: (expected true): " + result == expected);
+	print = (result == null)
+	console.log("test with four segments, with two pairs that have a common point: (expected true): " + print);
 	lines = new Array();
 }
 
