@@ -4,6 +4,7 @@
 
 // data structures, filled uniquely for each level file
 var points = new Array();
+var namedPoints = new Array();
 var lines = new Array();
 var circles = new Array();
 var canvas = document.getElementById("mainContent");
@@ -12,6 +13,7 @@ var pointRadius = 5;
 var pointTolerance = pointRadius * 2;
 var selectedPointIndex = -1;
 var nextLevelButtonHidden = true;
+addInNamedPoints();
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
@@ -140,6 +142,21 @@ function Point(x, y){
 	}
 }
 
+function NamedPoint(name, x, y){
+	this.name = name;
+	this.x = x;
+	this.y = y;
+	this.getPoint = function(){
+		return new Point(this.x, this.y);
+	}
+}
+
+function addInNamedPoints(){
+	for (var i = namedPoints.length - 1; i >= 0; i--) {
+		points.push(namedPoints[i].getPoint());
+	}
+}
+
 /*creates a segment out of two points, stores an x1, y1, x2, and a y2*/
 function Segment(x1, y1, x2, y2){
 	this.x1 = x1;
@@ -227,6 +244,14 @@ function drawPoints(context){
 		context.arc(x, y, pointRadius, 0, 2*Math.PI);
 		context.fill();
 		context.stroke();
+	}
+}
+
+function drawPointNames(context){
+	console.log("drawing point names");
+	for (var i = namedPoints.length - 1; i >= 0; i--) {
+		  context.font = "14px sans-serif";
+		  context.fillText(namedPoints[i].name, namedPoints[i].x + pointRadius + 1, namedPoints[i].y + pointRadius + 1);
 	}
 }
 
