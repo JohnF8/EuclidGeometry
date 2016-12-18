@@ -13,7 +13,6 @@ var pointRadius = 5;
 var pointTolerance = pointRadius * 2;
 var selectedPointIndex = -1;
 var nextLevelButtonHidden = true;
-addInNamedPoints();
 
 nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
@@ -290,6 +289,7 @@ function updateCanvas(){
 	drawLines(context);
 	drawCircles(context);
 	drawPoints(context);
+	drawPointNames(context);
 }
 
 function updateButton(){
