@@ -286,3 +286,7 @@ function getPoints(){
 function getCircles(){
 	return circles;
 }
+
+function getSegments(){
+	return lines;
+}
