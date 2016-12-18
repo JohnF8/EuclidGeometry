@@ -3,7 +3,8 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="stylesheet.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<title>Euclid Game Level 9</title>
+	<meta charset="utf-8"/>
+	<title>Euclid Game Level 1</title>
 </head>
 <body>
 	<h1> The Euclid Game </h1>
@@ -16,30 +17,47 @@
 		<button id="pointButton">point</button>
 		<button id="segmentButton">segment</button>
 		<button id="circleButton">circle</button>
-		<button id="midpointButton">Midpoint</button>
 	</div>
 	<!--creates the space to draw the objects-->
 	<canvas id="mainContent" height = "735" width="1200" style="border:1px solid #d3d3d3">
 		The game isn't working
 	</canvas>
 	<!--code for the level itself-->
+	<script id="common" src="common.js"></script>
 	<script id="level" src="level9.js"></script>
 	<!-- handles the toolbar functionality -->
 	<script type="text/javascript" id="toolbarTools">
 		//sets up for one to be able to change states based upon the toolbar buttons
 		var p = document.getElementById("toolbar");
 		var att = document.createAttribute("state");
+
 		att.value = "point";
 		p.setAttributeNode(att);
 		function updateToolbarState(newState){
+			var selectedButton = document.getElementById(newState + "Button");
 			document.getElementById("toolbar").setAttribute("state", newState);
 			document.getElementById("currentToolbarState").innerHTML = document.getElementById("toolbar").getAttribute("state");
+			selectedButton.style.backgroundColor = "#f47121";
+			if(newState == "point")
+			{
+				document.getElementById("segmentButton").style.backgroundColor = "#ededed";
+				document.getElementById("circleButton").style.backgroundColor = "#ededed";
+			}
+			if(newState == "segment")
+			{
+				document.getElementById("pointButton").style.backgroundColor = "#ededed";
+				document.getElementById("circleButton").style.backgroundColor = "#ededed";
+			}
+			if(newState == "circle")
+			{
+				document.getElementById("segmentButton").style.backgroundColor = "#ededed";
+				document.getElementById("pointButton").style.backgroundColor = "#ededed";
+			}
 		}
 		//create the event handlers for the toolbar
 		document.getElementById("pointButton").onclick = function(){updateToolbarState("point")};
 		document.getElementById("segmentButton").onclick = function(){updateToolbarState("segment")};
 		document.getElementById("circleButton").onclick = function(){updateToolbarState("circle")};
-		document.getElementById("midpointButton").onclick = function(){updateToolbarState("midpoint")};
 	</script>
 </body>
 </html>
