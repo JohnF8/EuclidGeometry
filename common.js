@@ -191,6 +191,9 @@ function Circle(xCenter, yCenter, xOther, yOther){
 	this.radius = Math.sqrt(Math.pow((xCenter - xOther), 2) + Math.pow((yCenter - yOther),2));
 	this.xCenter = xCenter;
 	this.yCenter = yCenter
+	this.getCenter = function(){
+		return new Point(this.xCenter, this.yCenter);
+	}
 }
 
 /*calculates the slope of a line segment*/
@@ -278,4 +281,8 @@ function calculateDistance(x1, y1, x2, y2){
 
 function getPoints(){
 	return points;
+}
+
+function getCircles(){
+	return circles;
 }
