@@ -142,18 +142,18 @@ function checkForCompletion()
 function allCirclesFound()
 {
 	var booleans = new Array(finalCircles.length);
-	for (var i = booleans.length - 1; i >= 0; i--) 
+	for (var i = booleans.length - 1; i >= 0; i--)
 	{
 		booleans[i] = false;
 	}
-	for (var i = finalCircles.length - 1; i >= 0; i--) 
+	for (var i = finalCircles.length - 1; i >= 0; i--)
 	{
 		if(mainContainsCircle(finalCircles[i]))
 		{
 			booleans[i] = true;
 		}
 	}
-	for (var i = booleans.length - 1; i >= 0; i--) 
+	for (var i = booleans.length - 1; i >= 0; i--)
 	{
 		if(!booleans[i])
 		{
@@ -166,18 +166,18 @@ function allCirclesFound()
 function allPointsFound()
 {
 	var booleans = new Array(finalPoints.length);
-	for (var i = booleans.length - 1; i >= 0; i--) 
+	for (var i = booleans.length - 1; i >= 0; i--)
 	{
 		booleans[i] = false;
 	}
-	for (var i = finalPoints.length - 1; i >= 0; i--) 
+	for (var i = finalPoints.length - 1; i >= 0; i--)
 	{
 		if(mainContainsPoint(finalPoints[i]))
 		{
 			booleans[i] = true;
 		}
 	}
-	for (var i = booleans.length - 1; i >= 0; i--) 
+	for (var i = booleans.length - 1; i >= 0; i--)
 	{
 		if(!booleans[i])
 		{
@@ -189,7 +189,7 @@ function allPointsFound()
 
 function mainContainsPoint(keyPoint)
 {
-	for (var i = points.length - 1; i >= 0; i--) 
+	for (var i = points.length - 1; i >= 0; i--)
 	{
 		if(calculateDistance(keyPoint.x, keyPoint.y, points[i].x, points[i].y) < pointRadius)
 		{
@@ -201,7 +201,7 @@ function mainContainsPoint(keyPoint)
 
 function mainContainsCircle(keyCircle)
 {
-	for (var i = circles.length - 1; i >= 0; i--) 
+	for (var i = circles.length - 1; i >= 0; i--)
 	{
 		if(calculateDistance(keyCircle.xCenter, keyCircle.yCenter, circles[i].xCenter, circles[i].yCenter) < pointRadius)
 		{
@@ -219,7 +219,7 @@ function allLinesFound()
 	if(lines.length >= finalLines.length)
 	{
 		var linesFoundBoolean = new Array(finalLines.length);
-		for (var i = finalLines.length - 1; i >= 0; i--) 
+		for (var i = finalLines.length - 1; i >= 0; i--)
 		{
 			var lineFoundNormally = lineFoundWithinError(finalLines[i]);
 			var lineFoundOther = lineFoundInverted(finalLines[i]);
@@ -239,7 +239,7 @@ function lineFoundWithinError(objectiveLine)
 	var objectiveX2 = objectiveLine.x2;
 	var objectiveY1 = objectiveLine.y1;
 	var objectiveY2 = objectiveLine.y2;
-	for (var i = lines.length - 1; i >= 0; i--) 
+	for (var i = lines.length - 1; i >= 0; i--)
 	{
 		var x1, x2, y1, y2;
 		x1 = lines[i].x1;
@@ -388,9 +388,9 @@ function lineFoundInverted(objectiveLine)
 // function closeToAnotherPoint(x, y)
 // {
 // 	var close = false;
-// 	for (var i = points.length - 1; i >= 0; i--) 
+// 	for (var i = points.length - 1; i >= 0; i--)
 // 	{
-// 		if(Math.sqrt(Math.pow((x - points[i].x), 2) - Math.pow((y - points[i].y), 2)) < pointRadius*2) 
+// 		if(Math.sqrt(Math.pow((x - points[i].x), 2) - Math.pow((y - points[i].y), 2)) < pointRadius*2)
 // 		{
 // 			close = true;
 // 		}
