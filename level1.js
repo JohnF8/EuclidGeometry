@@ -100,8 +100,8 @@ function allPointsFound(){
 }
 
 function mainContainsPoint(keyPoint){
-	for (var i = points.length - 1; i >= 0; i--) {
-		if(calculateDistance(keyPoint.x, keyPoint.y, points[i].x, points[i].y) < pointRadius){
+	for (var i = getPoints().length - 1; i >= 0; i--) {
+		if(calculateDistance(keyPoint.x, keyPoint.y, getPoints()[i].x, getPoints()[i].y) < pointRadius){
 			return true;
 		}
 	}
