@@ -9,14 +9,15 @@ var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 fillLevelData();
+addInNamedPoints();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
 
 
 function fillLevelData(){
-	points = [new Point(500, 400), new Point(700, 400)];
-	lines = [new Segment(500, 400, 700, 400)];
-	initialSegments = [new Segment(500, 400, 700, 400)];
+	namedPoints = [new NamedPoint("A", 500, 300), new NamedPoint("B", 700, 300)];
+	lines = [new Segment(500, 300, 700, 300)];
+	initialSegments = [new Segment(500, 300, 700, 300)];
 	levelNumber = 6;
 }
 

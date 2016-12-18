@@ -11,12 +11,12 @@ var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 fillLevelData();
+addInNamedPoints();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
 
 function fillLevelData(){
-	points = [new Point(300, 200), new Point(450, 200)];
-	//implement named points: (300, 200, "Q"), (450, 200, "P")
+	namedPoints = [new NamedPoint("Q", 300, 200), new NamedPoint("P", 450, 200)];
 	levelNumber = 2;
 }
 

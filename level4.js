@@ -12,13 +12,15 @@ var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
 updateButton();
 fillLevelData();
+addInNamedPoints();
 updateCanvas();
 console.log("source is " + document.getElementById("level").src);
 
 
 function fillLevelData(){
-	points = [new Point(100, 100), new Point(300, 100), new Point(200, 300), new Point(100, 500), new Point(300, 500), new Point(600, 300)];
 	//points A, B, C, D, E, F
+	namedPoints = [new NamedPoint("A", 100, 100), new NamedPoint("B", 300, 100), new NamedPoint("C", 200, 300),
+		             new NamedPoint("D", 100, 500), new NamedPoint("E", 300, 500), new NamedPoint("F", 600, 300)];
 	levelNumber = 4;
 }
 

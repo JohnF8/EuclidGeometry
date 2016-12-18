@@ -6,6 +6,7 @@ var levelNumber = 9;
 // To Common
 updateButton();
 fillLevelData();
+addInNamedPoints();
 updateCanvas();
 
 console.log("source is " + document.getElementById("level").src);
@@ -15,7 +16,8 @@ function fillLevelData()
 {
 	levelNumber = 9;
 	lines = [new Segment(400,400,600,200), new Segment(400,400,600,450)];
-	points = [new Point(600,325)]
+	points = [new Point(600,325)];
+	namedPoints = [new NamedPoint("A", 600, 200), new NamedPoint("B", 400, 400), new NamedPoint("C", 600, 450)]
 	finalPoints = new Array();
 	finalCircles = new Array();
 	finalLines = [new Segment(400,400, 600, 325)];
