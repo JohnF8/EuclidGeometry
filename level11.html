@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<meta charset="utf-8"/>
+	<title>Euclid Game Level 11</title>
+</head>
+<body>
+	<h1> The Euclid Game </h1>
+	<p>
+		Make a segment parallel to segment AB, starting at point C
+	</p>
+	<a href="level12.html"><button id="nextLevelButton" width="100%">Go to next level</button></a>
+	<p id="currentToolbarState" style="display: none">point</p>
+	<div id="toolbar">
+		<button id="pointButton">point</button>
+		<button id="segmentButton">segment</button>
+		<button id="circleButton">circle</button>
+	</div>
+	<!--creates the space to draw the objects-->
+	<canvas id="mainContent" height = "735" width="1200" style="border:1px solid #d3d3d3">
+		The game isn't working
+	</canvas>
+	<!--code for the level itself-->
+	<script id="common" src="common.js"></script>
+	<script id="level" src="level11.js"></script>
+</body>
+</html>
