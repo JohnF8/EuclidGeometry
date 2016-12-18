@@ -17,17 +17,6 @@ nextLevelButton.onclick = function(event){
 	$ ("#level").src = "level" + (levelNumber++) + ".js";
 }
 
-canvas.onmousemove = function(event){
-	var toolbarState = document.getElementById("toolbar").getAttribute("state");
-	if(selectedPointIndex > -1){
-		if(toolbarState == "segment"){
-			drawLine(canvas.getContext("2d"), new Segment(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
-		}else if(toolbarState == "circle"){
-			drawCircle(canvas.getContext("2d"), new Circle(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
-		}
-	}
-}
-
 function drawCircle(context, circle){
 	//gets rid of the last thing drawn because of the drag
 	context.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas
@@ -49,55 +38,94 @@ function drawLine(context, segment){
 	context.stroke();
 }
 
-canvas.onmousedown = function(event)
+function completeMultiFromPoints(startPointIndex, endPointIndex)
 {
-	var x = event.offsetX;
-	var y = event.offsetY;
-	var toolbarState = document.getElementById("toolbar").getAttribute("state");
+	console.log("completing new multiclick from " + JSON.stringify(points[startPointIndex]) + " to " + JSON.stringify(points[endPointIndex]));
+	var point1 = points[startPointIndex];
+	var point2 = points[endPointIndex];
 
-	var previouseSelectedPointIndex = selectedPointIndex;
-	selectedPointIndex = closeToAnotherPoint(x, y);
-	
-	if(selectedPointIndex == -1)
+	var toolbarState = document.getElementById("toolbar").getAttribute("state");
+	if(toolbarState == "segment")
+	{
+		console.log("added new segment");
+		lines.push(new Segment(point1.x, point1.y, point2.x,point2.y));
+	}
+	if(toolbarState == "circle")
+	{
+		console.log("added new circle");
+		circles.push(new Circle(point1.x, point1.y, point2.x,point2.y));
+	}
+	selectedPointIndex = -1;
+}
+
+function startMultiFromPoints(currentPointIndex)
+{
+    console.log("starting new multiclick @ " + JSON.stringify(points[currentPointIndex]) + " at index " + currentPointIndex);
+	selectedPointIndex = currentPointIndex;	
+}
+
+function getOrAddPoint(x,y)
+{
+	var currentPointIndex = closeToAnotherPoint(x, y);
+	if(currentPointIndex == -1) // new point
 	{
 		var point = new Point(x, y);
 		points.push(point);
-		selectedPointIndex = points.length-1;
-		console.log("new point x:" + x + " y: " + y + "selectedPointIndex: " + selectedPointIndex );
+		currentPointIndex = points.length-1;
+		console.log("new point x:" + x + " y: " + y);
 	}
-	if(toolbarState == "point")
-	{
-		lastMouseDown = null;
-		selectedPointIndex = -1;
-	}
-	if(toolbarState == "segment" || toolbarState == "circle")
-	{
-		if(previouseSelectedPointIndex != -1)
-		{
-			var point1 = points[previouseSelectedPointIndex];
-			var point2 = points[selectedPointIndex];
-	
-			if(toolbarState == "segment")
-			{
-				lines.push(new Segment(point1.x, point1.y, point2.x,point2.y));
-			}
-			if(toolbarState == "circle")
-			{
-				circles.push(new Circle(point1.x, point1.y, point2.x,point2.y));
-			}
-			selectedPointIndex = -1;
+	return (currentPointIndex);
+};
+
+canvas.onmousemove = function(event){
+	if(selectedPointIndex > -1){
+		var toolbarState = document.getElementById("toolbar").getAttribute("state");
+		if(toolbarState == "segment"){
+			drawLine(canvas.getContext("2d"), new Segment(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
+		}else if(toolbarState == "circle"){
+			drawCircle(canvas.getContext("2d"), new Circle(points[selectedPointIndex].x, points[selectedPointIndex].y, event.offsetX, event.offsetY));
 		}
 	}
+}
 
+canvas.onmousedown = function(event)
+{
+	var toolbarState = document.getElementById("toolbar").getAttribute("state");
+	var currentPointIndex = getOrAddPoint(event.offsetX,event.offsetY);
+	
+	if(toolbarState == "segment" || toolbarState == "circle")
+	{		
+		if(selectedPointIndex == -1)
+		{
+			startMultiFromPoints(currentPointIndex);
+		}
+		else
+		{
+			if (currentPointIndex != selectedPointIndex) 
+			{
+				completeMultiFromPoints(selectedPointIndex,currentPointIndex);
+			}
+		}
+	}
 	updateCanvas();
 	checkForCompletion();
 	updateButton();
 };
 
-
 canvas.onmouseup = function(event)
 {
-	canvas.onmousedown(event);
+	var toolbarState = document.getElementById("toolbar").getAttribute("state");
+	var currentPointIndex = getOrAddPoint(event.offsetX,event.offsetY);
+	if (selectedPointIndex != -1)
+	{
+		if (currentPointIndex != selectedPointIndex) 
+		{
+		    completeMultiFromPoints(selectedPointIndex,currentPointIndex);
+		}
+	}
+	updateCanvas();
+	checkForCompletion();
+	updateButton();
 };
 
 /*creates a point construct, contains the x and y variables*/
@@ -192,7 +220,7 @@ function drawPoints(context){
 		var x = points[i].x;
 		var y = points[i].y;
 		console.log("drawing point at x: " + x + " y: " + y);
-		context.fillStyle = "#0000ff";
+		context.fillStyle = (i == selectedPointIndex) ? "#ffff00" : "#0000ff";
 		context.arc(x, y, pointRadius, 0, 2*Math.PI);
 		context.fill();
 		context.stroke();
@@ -223,6 +251,7 @@ function drawCircles(context){
 		context.stroke();
 	}
 }
+
 
 
 
