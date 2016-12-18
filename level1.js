@@ -1,6 +1,3 @@
-var points = [new Point(100, 100), new Point(50, 200), new Point(150, 200), new Point(200, 100), new Point(200, 200)];
-var lines = new Array();
-var circles = new Array();
 var finalPoints = [new Point(100, 100), new Point(50, 200), new Point(150, 200), new Point(200, 100), new Point(200, 200)];
 var finalLines = [new Segment(100, 100, 50, 200), new Segment(50, 200, 150, 200), new Segment(150, 200, 100, 100), new Segment(200, 100, 200, 200)];
 var finalCircles = new Array();

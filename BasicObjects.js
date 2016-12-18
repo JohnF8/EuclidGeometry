@@ -6,7 +6,6 @@ var canvas = document.getElementById("mainContent");
 var ctx = canvas.getContext("2d");
 var toolbarState = document.getElementById("toolbar").getAttribute("state");
 var nextLevelButton = document.getElementById("nextLevelButton");
-var point3, point4;
 updateButton();
 fillLevelData();
 updateCanvas();
