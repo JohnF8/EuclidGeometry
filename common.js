@@ -62,7 +62,7 @@ function completeMultiFromPoints(startPointIndex, endPointIndex)
 function startMultiFromPoints(currentPointIndex)
 {
     console.log("starting new multiclick @ " + JSON.stringify(points[currentPointIndex]) + " at index " + currentPointIndex);
-	selectedPointIndex = currentPointIndex;	
+	selectedPointIndex = currentPointIndex;
 }
 
 function getOrAddPoint(x,y)
@@ -93,16 +93,16 @@ canvas.onmousedown = function(event)
 {
 	var toolbarState = document.getElementById("toolbar").getAttribute("state");
 	var currentPointIndex = getOrAddPoint(event.offsetX,event.offsetY);
-	
+
 	if(toolbarState == "segment" || toolbarState == "circle")
-	{		
+	{
 		if(selectedPointIndex == -1)
 		{
 			startMultiFromPoints(currentPointIndex);
 		}
 		else
 		{
-			if (currentPointIndex != selectedPointIndex) 
+			if (currentPointIndex != selectedPointIndex)
 			{
 				completeMultiFromPoints(selectedPointIndex,currentPointIndex);
 			}
@@ -119,7 +119,7 @@ canvas.onmouseup = function(event)
 	var currentPointIndex = getOrAddPoint(event.offsetX,event.offsetY);
 	if (selectedPointIndex != -1)
 	{
-		if (currentPointIndex != selectedPointIndex) 
+		if (currentPointIndex != selectedPointIndex)
 		{
 		    completeMultiFromPoints(selectedPointIndex,currentPointIndex);
 		}
@@ -279,9 +279,6 @@ function drawCircles(context){
 	}
 }
 
-
-
-
 function updateCanvas(){
 	var canvas = document.getElementById("mainContent");
 	var context = canvas.getContext("2d");
@@ -315,3 +312,36 @@ function getCircles(){
 function getSegments(){
 	return lines;
 }
+
+// Handles toolbar functionality
+//sets up for one to be able to change states based upon the toolbar buttons
+var p = document.getElementById("toolbar");
+var att = document.createAttribute("state");
+
+att.value = "point";
+p.setAttributeNode(att);
+function updateToolbarState(newState){
+	var selectedButton = document.getElementById(newState + "Button");
+	document.getElementById("toolbar").setAttribute("state", newState);
+	document.getElementById("currentToolbarState").innerHTML = document.getElementById("toolbar").getAttribute("state");
+	selectedButton.style.backgroundColor = "#f47121";
+	if(newState == "point")
+	{
+		document.getElementById("segmentButton").style.backgroundColor = "#ededed";
+		document.getElementById("circleButton").style.backgroundColor = "#ededed";
+	}
+	if(newState == "segment")
+	{
+		document.getElementById("pointButton").style.backgroundColor = "#ededed";
+		document.getElementById("circleButton").style.backgroundColor = "#ededed";
+	}
+	if(newState == "circle")
+	{
+		document.getElementById("segmentButton").style.backgroundColor = "#ededed";
+		document.getElementById("pointButton").style.backgroundColor = "#ededed";
+	}
+}
+//create the event handlers for the toolbar
+document.getElementById("pointButton").onclick = function(){updateToolbarState("point")};
+document.getElementById("segmentButton").onclick = function(){updateToolbarState("segment")};
+document.getElementById("circleButton").onclick = function(){updateToolbarState("circle")};
