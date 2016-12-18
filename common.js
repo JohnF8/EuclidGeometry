@@ -214,7 +214,7 @@ function Circle(xCenter, yCenter, xOther, yOther){
 
 /*calculates the slope of a line segment*/
 function calculateSlope(segment){
-	var slope = (segment.b.y - segment.a.y)/(segment.b.x - segment.a.x);
+	var slope = (segment.y2 - segment.y1)/(segment.x2 - segment.x1);
 	return slope;
 }
 
