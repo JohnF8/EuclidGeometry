@@ -23,7 +23,7 @@ function checkForCompletion(){
 		var secondPoint = points[1];
 		var otherSegments = findSegmentsWithOneOf(firstPoint, secondPoint);
 		var possibleThirdPoint = intersectingTrianglesOnPointsOtherThan(otherSegments, firstPoint, secondPoint);
-		if(possibleThirdPoint != null && Math.abs(calculateDistance(possibleThirdPoint.x, possibleThirdPoint.y, firstPoint.x, firstPoint.y) - lines[0].length) > pointRadius){
+		if(possibleThirdPoint != null && Math.abs(calculateDistance(possibleThirdPoint.x, possibleThirdPoint.y, firstPoint.x, firstPoint.y) - lines[0].length) > pointRadius && Math.abs(possibleThirdPoint.x - 625) > pointTolerance){
 			nextLevelButtonHidden = false;
 		}
 	}
