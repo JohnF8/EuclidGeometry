@@ -1,6 +1,6 @@
 finalPoints = new Array();
-finalCircles = new Array();
-finalLines = [new Segment(400,400, 600, 325)];
+finalCircles = [new Circle(600,200,400,400), new Circle(600,600,400,400)];
+finalLines = [new Segment(400,400, 800, 400)];
 var levelNumber = 9;
 /////////////////////////////////////////////////////////
 // To Common
@@ -15,12 +15,12 @@ console.log("source is " + document.getElementById("level").src);
 function fillLevelData()
 {
 	levelNumber = 9;
-	lines = [new Segment(400,400,600,200), new Segment(400,400,600,450)];
-	points = [new Point(600,325)];
-	namedPoints = [new NamedPoint("A", 600, 200), new NamedPoint("B", 400, 400), new NamedPoint("C", 600, 450)]
+	lines = [new Segment(400,400,600,200), new Segment(400,400,600,600)];
+	points = [new Point(400,400)];
+	namedPoints = [new NamedPoint("A", 600, 200), new NamedPoint("B", 400, 400), new NamedPoint("C", 600, 600)]
 	finalPoints = new Array();
-	finalCircles = new Array();
-	finalLines = [new Segment(400,400, 600, 325)];
+	finalCircles = [new Circle(600,200,400,400), new Circle(600,600,400,400)];
+	finalLines = [new Segment(400,400, 800, 400)];
 }
 
 function testLineFoundWithinError(){
@@ -62,6 +62,10 @@ function checkForCompletion(){
 	var circlesFound = allCirclesFound();
 	var pointsFound = allPointsFound();
 	var linesFound = allLinesFound();
+	console.log(circlesFound);
+	console.log(pointsFound);
+	console.log(linesFound);
+
 	if(circlesFound && pointsFound && linesFound){
 		nextLevelButtonHidden = false;
 	}
